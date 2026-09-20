@@ -21,14 +21,14 @@
     <a href="#tentang">Tentang</a>
     <a href="#kontak">Kontak</a>
   </nav>
-  <!-- Tombol PDF disembunyikan sampai filenya ada.
-       Taruh file di assets/portofolio-vinson-nicholas-sorensen.pdf,
-       lalu hapus baris "<!--" di bawah ini dan baris "-->" di bawahnya. -->
-  <!--
-  <a class="tombol tombol-garis" href="assets/portofolio-vinson-nicholas-sorensen.pdf" download>
-    Unduh versi PDF
+  <!-- Kedua tombol ini muncul sendiri begitu file PDF-nya ada di folder assets.
+       Selama filenya belum ada, tombolnya disembunyikan supaya tidak mengarah ke halaman error. -->
+  <a class="tombol tombol-garis" data-cek-file href="assets/cv-vinson-nicholas-sorensen.pdf" download hidden>
+    Unduh CV
   </a>
-  -->
+  <a class="tombol tombol-garis" data-cek-file href="assets/portofolio-vinson-nicholas-sorensen.pdf" download hidden>
+    Unduh portofolio PDF
+  </a>
 </header>
 
 <main id="konten">

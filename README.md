@@ -24,7 +24,14 @@ Lalu buka http://localhost:8000.
 ## Yang masih perlu diisi
 
 1. Foto profil. Simpan fotomu sebagai `assets/foto-profil.jpg`, lalu di `index.html` ganti `assets/foto-profil.svg` menjadi `assets/foto-profil.jpg`. Ukuran yang cocok sekitar 720x900 piksel (potret).
-2. Versi PDF. Simpan sebagai `assets/portofolio-vinson-nicholas-sorensen.pdf`. Tombolnya sudah ada di `index.html` tetapi sementara disembunyikan, supaya tidak menghasilkan halaman error. Setelah file PDF-nya ada, hapus baris `<!--` dan `-->` yang mengapit tombol itu.
+2. Dua file PDF, yaitu CV dan portofolio:
+
+   | Tombol | Nama file yang diharapkan |
+   |---|---|
+   | Unduh CV | `assets/cv-vinson-nicholas-sorensen.pdf` |
+   | Unduh portofolio PDF | `assets/portofolio-vinson-nicholas-sorensen.pdf` |
+
+   Tombolnya sudah ada di `index.html` dan muncul otomatis begitu filenya ada, jadi tidak perlu mengubah kode. Selama filenya belum ada, tombolnya disembunyikan supaya tidak mengarah ke halaman error. Pengecekan ini hanya berjalan kalau halaman dibuka lewat server (`python -m http.server 8000` atau di Vercel), bukan saat file `index.html` diklik dua kali.
 3. Link GitHub dan LinkedIn di bagian Kontak. Di `index.html`, cari `href="#"` lalu ganti dengan alamat profilmu.
 
 ## Menambah proyek baru
