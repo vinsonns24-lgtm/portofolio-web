@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinson Nicholas Sorensen — Portofolio Data Science</title>
+<meta name="description" content="Portofolio Vinson Nicholas Sorensen, mahasiswa Data Science BINUS University. Kumpulan proyek analisis data, machine learning, dan dashboard.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="#konten">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="#proyek">Proyek</a>
+    <a href="#tentang">Tentang</a>
+    <a href="#kontak">Kontak</a>
+  </nav>
+  <!-- Tombol PDF disembunyikan sampai filenya ada.
+       Taruh file di assets/portofolio-vinson-nicholas-sorensen.pdf,
+       lalu hapus baris "<!--" di bawah ini dan baris "-->" di bawahnya. -->
+  <!--
+  <a class="tombol tombol-garis" href="assets/portofolio-vinson-nicholas-sorensen.pdf" download>
+    Unduh versi PDF
+  </a>
+  -->
+</header>
+
+<main id="konten">
+
+  <section class="hero">
+    <div class="hero-teks">
+      <p class="label-kecil">Mahasiswa Data Science, BINUS University</p>
+      <h1>Halo, saya Vinson.<br>Saya mengubah data mentah menjadi keputusan.</h1>
+      <p class="paragraf-besar">
+        Saya membuat analisis data dan model machine learning, lalu menyajikannya sebagai dashboard
+        yang bisa langsung dicoba. Fokus saya pada proses yang jujur: data dibersihkan dengan alasan
+        yang jelas, model dibandingkan dengan patokan sederhana, dan keterbatasannya ditulis apa adanya.
+      </p>
+      <div class="hero-aksi">
+        <a class="tombol tombol-utama" href="#proyek">Lihat proyek</a>
+        <a class="tombol tombol-garis" href="mailto:vinson.sorensen@binus.ac.id">Hubungi saya</a>
+      </div>
+      <ul class="fakta">
+        <li><strong>Python</strong><span>pandas, scikit-learn</span></li>
+        <li><strong>Analisis</strong><span>EDA, data cleaning</span></li>
+        <li><strong>Dashboard</strong><span>Streamlit, Altair</span></li>
+      </ul>
+    </div>
+
+    <figure class="foto">
+      <!-- Ganti src di bawah dengan foto asli, misalnya assets/foto-profil.jpg -->
+      <img src="assets/foto-profil.svg" alt="Foto profil Vinson Nicholas Sorensen" width="360" height="440">
+      <figcaption>Vinson Nicholas Sorensen</figcaption>
+    </figure>
+  </section>
+
+  <section id="proyek" class="bagian">
+    <div class="bagian-judul">
+      <h2>Proyek</h2>
+      <p>Klik kartu untuk membuka kodenya di GitHub.</p>
+    </div>
+
+    <div class="kartu-grid">
+
+      <article class="kartu">
+        <p class="label-kecil">Analisis data · Machine learning</p>
+        <h3>
+          <a class="tautan-kartu" href="https://github.com/vinsonns24-lgtm/Tokopedia-Market-Dashboard" target="_blank" rel="noopener">
+            Tokopedia Market Dashboard
+          </a>
+        </h3>
+        <p>
+          Riset pasar dari 29.519 listing produk dan 40.607 ulasan pembeli Tokopedia. Berisi delapan
+          notebook analisis, model sentimen ulasan berbahasa Indonesia, dan dashboard dua halaman.
+        </p>
+        <ul class="poin">
+          <li>Rating 5,0 ternyata menandakan produk yang baru punya sedikit pembeli, bukan produk terbaik.</li>
+          <li>Diskon besar tidak menjamin produk laris: dua pertiga produk berdiskon di atas 50% tetap sepi.</li>
+          <li>Model sentimen menemukan keluhan dengan F1 sekitar 0,6, dibanding 0 pada tebakan sederhana.</li>
+        </ul>
+        <ul class="tag">
+          <li>Python</li><li>pandas</li><li>scikit-learn</li><li>Streamlit</li><li>pytest</li>
+        </ul>
+        <p class="kartu-tautan">
+          <a href="https://tokopedia-market-dashboard.streamlit.app/" target="_blank" rel="noopener">
+            Buka dashboard →
+          </a>
+        </p>
+      </article>
+
+      <article class="kartu kartu-kosong">
+        <p class="label-kecil">Segera</p>
+        <h3>Proyek berikutnya</h3>
+        <p>Tempat untuk proyek data berikutnya. Kartu ini diganti begitu proyeknya selesai.</p>
+      </article>
+
+      <article class="kartu kartu-kosong">
+        <p class="label-kecil">Segera</p>
+        <h3>Proyek berikutnya</h3>
+        <p>Tempat untuk proyek data berikutnya. Kartu ini diganti begitu proyeknya selesai.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="tentang" class="bagian">
+    <div class="bagian-judul">
+      <h2>Tentang saya</h2>
+    </div>
+    <div class="tentang">
+      <p>
+        Saya mahasiswa Data Science di BINUS University. Ketertarikan saya ada pada proses mengubah
+        data yang berantakan menjadi jawaban yang bisa dipakai: membersihkan data, mencari pola,
+        melatih model, lalu menyajikannya supaya orang lain bisa memakainya tanpa perlu membuka kode.
+      </p>
+      <p>
+        Saya terbiasa bekerja dengan Python beserta pandas, scikit-learn, matplotlib, dan Streamlit,
+        serta memakai git untuk mencatat setiap langkah pengerjaan. Saya sedang mencari kesempatan
+        magang di bidang data analyst atau data science.
+      </p>
+    </div>
+  </section>
+
+  <section id="kontak" class="bagian">
+    <div class="bagian-judul">
+      <h2>Kontak</h2>
+      <p>Silakan hubungi saya lewat salah satu kanal berikut.</p>
+    </div>
+    <ul class="kontak-daftar">
+      <li>
+        <span class="label-kecil">Email kampus</span>
+        <a href="mailto:vinson.sorensen@binus.ac.id">vinson.sorensen@binus.ac.id</a>
+      </li>
+      <li>
+        <span class="label-kecil">Email pribadi</span>
+        <a href="mailto:vinsonns24@gmail.com">vinsonns24@gmail.com</a>
+      </li>
+      <li>
+        <span class="label-kecil">GitHub</span>
+        <!-- Ganti # dengan alamat profil GitHub -->
+        <a href="#">Tautan menyusul</a>
+      </li>
+      <li>
+        <span class="label-kecil">LinkedIn</span>
+        <!-- Ganti # dengan alamat profil LinkedIn -->
+        <a href="#">Tautan menyusul</a>
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
