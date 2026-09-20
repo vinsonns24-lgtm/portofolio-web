@@ -227,7 +227,12 @@ a:focus-visible,
   padding: 0.2rem 0.65rem;
 }
 
-.kartu-tautan { margin: 0; }
+.kartu-tautan {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+}
 .kartu-tautan a {
   position: relative;
   z-index: 1;
