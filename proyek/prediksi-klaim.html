@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediksi Klaim Asuransi Kesehatan — Vinson Nicholas Sorensen</title>
+<meta name="description" content="Forecasting frekuensi, severity, dan total klaim asuransi kesehatan untuk DSC MCF ITB 2026, beserta analisis faktor penentu nilai klaim dengan LightGBM dan SHAP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="../index.html">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="../index.html#about">About</a>
+    <a href="../index.html#proyek">Proyek</a>
+    <a href="../index.html#kontak">Kontak</a>
+  </nav>
+</header>
+
+<main id="konten" class="detail">
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+  <p class="label-kecil">Forecasting · Machine learning · Kompetisi</p>
+  <h1>Prediksi Klaim Asuransi Kesehatan</h1>
+  <p class="paragraf-besar">
+    Memprediksi frekuensi, rata-rata nilai, dan total klaim bulanan sebuah portofolio asuransi kesehatan
+    untuk lima bulan ke depan, lalu mencari faktor yang paling menentukan besarnya klaim. Dikerjakan
+    untuk Data Science Competition Mathematical Challenge Festival (MCF) ITB 2026.
+  </p>
+
+  <!-- Tambahkan tombol GitHub di sini begitu repo proyek ini sudah dibuat. -->
+
+  <ul class="angka-kunci">
+    <li><strong>4.627</strong><span>klaim dari 4.096 polis</span></li>
+    <li><strong>10</strong><span>metode forecasting diuji</span></li>
+    <li><strong>9,9%</strong><span>MAPE gabungan backtest</span></li>
+    <li><strong>0,50</strong><span>R² model nilai klaim</span></li>
+  </ul>
+
+  <figure class="gambar">
+    <img src="../assets/proyek/klaim-prediksi.png" alt="Tiga grafik frekuensi, severity, dan total klaim bulanan dari Januari 2024 sampai Juli 2025 yang naik turun, diikuti garis prediksi datar untuk Agustus sampai Desember 2025." width="1489" height="350" loading="lazy">
+    <figcaption>Data aktual Januari 2024 sampai Juli 2025 dan prediksi Agustus sampai Desember 2025.</figcaption>
+  </figure>
+
+  <!-- ------------------------------------------------------------ masalah -->
+  <section class="detail-bagian">
+    <h2>Masalah</h2>
+    <p>
+      Klaim asuransi kesehatan individu terus naik, dan kenaikan itu akhirnya membuat premi makin mahal.
+      Panitia meminta dua hal: memprediksi frekuensi, severity (rata-rata nilai per klaim), dan total klaim
+      per bulan untuk Agustus sampai Desember 2025, serta menemukan faktor yang paling berpengaruh
+      terhadap nilai klaim supaya perusahaan bisa melakukan seleksi risiko, pencegahan, dan deteksi dini.
+    </p>
+    <p>
+      Prediksi dinilai dengan MAPE untuk masing-masing target, lalu dirata-rata.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ data -->
+  <section class="detail-bagian">
+    <h2>Data</h2>
+    <p>
+      4.096 polis dan 4.627 klaim yang terjadi antara Januari 2024 dan Juli 2025, lengkap dengan jenis
+      perawatan, diagnosis ICD, lokasi rumah sakit, tiga tanggal, dan nilai klaim.
+    </p>
+
+    <div class="keputusan">
+      <h3>Bulan klaim dihitung dari tanggal pasien masuk RS</h3>
+      <p>
+        Panitia tidak menyebut tanggal mana yang dipakai. Klaim rata-rata baru dibayar dua bulan setelah
+        pasien pulang, sehingga deret per tanggal bayar terlihat rendah di awal 2024 dan anjlok di akhir
+        2025. Itu efek batas periode data, bukan perubahan jumlah klaim. Deret per tanggal masuk RS tidak
+        punya masalah ini.
+      </p>
+    </div>
+    <figure class="gambar">
+      <img src="../assets/proyek/klaim-tiga-tanggal.png" alt="Grafik jumlah klaim per bulan menurut tanggal masuk RS, keluar RS, dan pembayaran. Deret masuk dan keluar RS berimpit dan stabil. Deret pembayaran rendah di awal 2024 dan turun tajam setelah Juli 2025." width="954" height="372" loading="lazy">
+      <figcaption>Jumlah klaim per bulan menurut tiga jenis tanggal.</figcaption>
+    </figure>
+
+    <div class="keputusan">
+      <h3>Jumlah nasabah tetap</h3>
+      <p>
+        Semua polis mulai berlaku antara 2011 dan 2018. Tidak ada polis baru, jadi naik turunnya klaim
+        bukan karena pertambahan nasabah.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Klaim raksasa menggeser severity bulanan</h3>
+      <p>
+        Median klaim Rp14 juta, tetapi 1% klaim terbesar bernilai di atas Rp634 juta dan bisa menyumbang
+        sampai 18% total satu bulan. Sembilan dari sepuluh klaim terbesar adalah rawat inap di luar
+        Indonesia. Lonjakan seperti ini hampir mustahil ditebak per bulan.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ forecasting -->
+  <section class="detail-bagian">
+    <h2>Forecasting</h2>
+    <p>
+      Karena data hanya 19 bulan, metode dipilih dengan <em>rolling-origin backtest</em>: dari setiap bulan
+      antara Juni 2024 dan Februari 2025, metode hanya melihat data sebelumnya, memprediksi 5 bulan ke
+      depan, lalu dicocokkan dengan data asli. Horizon 5 bulan sama dengan tugas kompetisi.
+    </p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Metode</th><th class="angka">Frekuensi</th><th class="angka">Severity</th><th class="angka">Total</th><th class="angka">Gabungan</th></tr>
+        </thead>
+        <tbody>
+          <tr class="baris-utama"><td>Rata-rata 6 bulan × 0,95 (final)</td><td class="angka">7,6%</td><td class="angka">10,5%</td><td class="angka">11,7%</td><td class="angka">9,9%</td></tr>
+          <tr><td>Rata-rata 6 bulan</td><td class="angka">8,1%</td><td class="angka">10,9%</td><td class="angka">12,4%</td><td class="angka">10,5%</td></tr>
+          <tr><td>Rata-rata semua bulan</td><td class="angka">9,0%</td><td class="angka">12,0%</td><td class="angka">14,3%</td><td class="angka">11,8%</td></tr>
+          <tr><td>Holt dengan tren teredam</td><td class="angka">8,7%</td><td class="angka">14,0%</td><td class="angka">17,8%</td><td class="angka">13,5%</td></tr>
+          <tr><td>Tren linear</td><td class="angka">9,8%</td><td class="angka">16,7%</td><td class="angka">22,8%</td><td class="angka">16,4%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="keputusan">
+      <h3>Metode yang menangkap tren justru lebih buruk</h3>
+      <p>
+        Dengan jumlah nasabah yang tetap dan deret sependek 19 bulan, "tren" yang ditangkap lebih banyak
+        berupa kebetulan. Rata-rata enam bulan terakhir paling stabil di ketiga target.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Prediksi diturunkan 5% karena sifat MAPE</h3>
+      <p>
+        MAPE menghukum prediksi yang terlalu tinggi lebih berat daripada yang terlalu rendah. Faktor 0,95
+        memperbaiki ketiga target sekaligus di backtest. Nilainya sengaja dibatasi di kelipatan 0,05
+        supaya tidak terlalu menyesuaikan diri dengan sembilan titik backtest.
+      </p>
+    </div>
+
+    <p>
+      Prediksi final per bulan: sekitar <strong>225 klaim</strong>, severity <strong>Rp54,5 juta</strong>,
+      dan total <strong>Rp12,9 miliar</strong>.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ faktor -->
+  <section class="detail-bagian">
+    <h2>Faktor penentu nilai klaim</h2>
+    <p>
+      Model LightGBM memprediksi nilai satu klaim (skala log) dari ciri nasabah dan klaimnya. Validasinya
+      memakai GroupKFold per nomor polis, supaya klaim dari nasabah yang sama tidak muncul di data latih
+      dan uji sekaligus. Model menjelaskan sekitar separuh variasi nilai klaim (R² 0,50), dibanding 0,15
+      untuk patokan rata-rata per jenis perawatan.
+    </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/klaim-faktor-shap.png" alt="Grafik batang pengaruh faktor menurut SHAP. Dari terbesar: lama rawat, lokasi rumah sakit, bab ICD, jenis rawat, reimburse atau cashless, usia, lama polis, domisili, plan code, dan gender." width="790" height="390" loading="lazy">
+      <figcaption>Rata-rata pengaruh setiap faktor menurut SHAP.</figcaption>
+    </figure>
+
+    <div class="keputusan">
+      <h3>Lama rawat adalah penentu terbesar</h3>
+      <p>
+        Median klaim tanpa menginap Rp2,9 juta, rawat 6 sampai 10 hari Rp67 juta, dan lebih dari 10 hari
+        Rp199 juta. Pengendalian biaya paling berdampak di kasus rawat inap panjang.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Lokasi rumah sakit lebih penting daripada jenis plan</h3>
+      <p>
+        Klaim di Singapura hanya 22% dari jumlah klaim, tetapi 50% total nilai. Median klaim di sana Rp53
+        juta, dibanding Rp9 juta di Indonesia. Setelah lokasi diketahui, plan hampir tidak menambah informasi:
+        yang mahal adalah kebiasaan berobat ke luar negeri, bukan plannya.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Tiga kelompok diagnosis menyumbang 58% total klaim</h3>
+      <p>
+        Kanker (30%), jantung dan pembuluh darah (16%), serta otot dan tulang (12%). Dengan usia rata-rata
+        nasabah yang mengajukan klaim sekitar 59 tahun, skrining dini kanker dan jantung adalah kandidat
+        program pencegahan yang paling relevan.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ keterbatasan -->
+  <section class="detail-bagian">
+    <h2>Keterbatasan</h2>
+    <ul class="poin">
+      <li>Hanya 19 bulan data, sehingga pola musiman tahunan tidak bisa diuji.</li>
+      <li>Bulan klaim diasumsikan dihitung dari tanggal pasien masuk RS. Kalau panitia memakai tanggal lain, skor resmi bisa berbeda dari hasil backtest.</li>
+      <li>Faktor koreksi 0,95 dipilih dari backtest yang sama dengan pemilihan metode.</li>
+      <li>Model faktor klaim menunjukkan hubungan, bukan sebab-akibat. Tingkat keparahan penyakit dan tindakan medis tidak ada di data.</li>
+    </ul>
+  </section>
+
+  <ul class="tag detail-tag">
+    <li>Python</li><li>pandas</li><li>statsmodels</li><li>LightGBM</li><li>SHAP</li><li>scikit-learn</li>
+  </ul>
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
