@@ -127,10 +127,31 @@
         </p>
       </article>
 
-      <article class="kartu kartu-kosong">
-        <p class="label-kecil">Segera</p>
-        <h3>Proyek berikutnya</h3>
-        <p>Tempat untuk proyek berikutnya. Kartu ini diganti begitu proyeknya selesai.</p>
+      <article class="kartu">
+        <p class="label-kecil">Machine learning · Model deployment</p>
+        <h3>
+          <a class="tautan-kartu" href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">
+            Credit Score Classification
+          </a>
+        </h3>
+        <p>
+          Proyek akhir mata kuliah Model Deployment. Model yang menggolongkan skor kredit nasabah
+          menjadi Good, Standard, atau Poor dari 25.000 catatan bulanan milik 11.254 nasabah,
+          lengkap dengan pipeline pelatihan, pencatatan eksperimen, dan aplikasi prediksi.
+        </p>
+        <ul class="poin">
+          <li>Data dibagi per nasabah, bukan per baris, supaya nasabah yang sama tidak muncul di data latih dan data uji sekaligus.</li>
+          <li>Random Forest mencapai F1 macro 0,69 pada data uji, dibanding 0,23 bila selalu menebak kelas terbanyak.</li>
+          <li>Pipeline dijalankan lokal dengan MLflow dan Streamlit, lalu dipindah ke AWS SageMaker hingga model bisa dipanggil lewat endpoint.</li>
+        </ul>
+        <ul class="tag">
+          <li>Python</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li>
+        </ul>
+        <p class="kartu-tautan">
+          <a href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">
+            Lihat kode di GitHub →
+          </a>
+        </p>
       </article>
 
     </div>
