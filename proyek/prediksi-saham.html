@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediksi Harga Saham dengan LSTM — Vinson Nicholas Sorensen</title>
+<meta name="description" content="Model LSTM untuk memprediksi harga penutupan saham AAPL dan AMD satu hari ke depan, dengan sepuluh varian eksperimen dan uji stasioneritas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="../index.html">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="../index.html#tentang">Tentang</a>
+    <a href="../index.html#proyek">Proyek</a>
+    <a href="../index.html#kontak">Kontak</a>
+  </nav>
+</header>
+
+<main id="konten" class="detail">
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+  <p class="label-kecil">Deep learning · Time series</p>
+  <h1>Prediksi Harga Saham dengan LSTM</h1>
+  <p class="paragraf-besar">
+    Model LSTM yang memprediksi harga penutupan satu hari ke depan untuk saham Apple (AAPL) dan AMD dari
+    harga lima hari sebelumnya. Isi utamanya adalah eksperimen bertahap: apa yang benar-benar membuat
+    model lebih baik, dan apa yang ternyata tidak. Soal ujian akhir mata kuliah Deep Learning, BINUS University.
+  </p>
+
+  <p class="detail-tautan">
+    <a class="tombol tombol-utama" href="https://github.com/vinsonns24-lgtm/LSTM-StockPrediction" target="_blank" rel="noopener">
+      Lihat kode di GitHub
+    </a>
+  </p>
+
+  <ul class="angka-kunci">
+    <li><strong>40</strong><span>tahun data harian</span></li>
+    <li><strong>10</strong><span>varian model diuji</span></li>
+    <li><strong>66%</strong><span>RMSE AAPL turun dari baseline</span></li>
+    <li><strong>1,6%</strong><span>MAPE AAPL data uji</span></li>
+  </ul>
+
+  <figure class="gambar">
+    <img src="../assets/proyek/saham-prediksi-vs-aktual.png" alt="Dua grafik harga aktual dibanding prediksi di data uji. Untuk AAPL, prediksi baseline melenceng jauh di atas harga aktual saat harga naik tajam, sedangkan prediksi model final hampir berimpit dengan harga aktual. Untuk AMD, kedua prediksi sama-sama dekat dengan harga aktual." width="1500" height="500" loading="lazy">
+    <figcaption>Prediksi dibanding harga aktual di data uji. Baseline AAPL melenceng jauh saat harga naik tajam, model final tetap mengikuti.</figcaption>
+  </figure>
+
+  <!-- ------------------------------------------------------------ masalah -->
+  <section class="detail-bagian">
+    <h2>Masalah</h2>
+    <p>
+      Tugasnya memprediksi harga penutupan hari berikutnya dengan arsitektur LSTM, lalu memodifikasi
+      baseline supaya lebih baik. Tantangannya, harga saham satu hari ke depan mendekati <em>random walk</em>:
+      harga besok kira-kira sama dengan harga hari ini ditambah gangguan kecil. Menambah ukuran model
+      belum tentu membantu, jadi yang perlu dicari adalah perubahan yang benar-benar berdampak.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ data -->
+  <section class="detail-bagian">
+    <h2>Data</h2>
+    <p>
+      Harga harian AAPL (9.909 hari, Desember 1980 sampai April 2020) dan AMD (10.098 hari, Maret 1980
+      sampai April 2020). Tidak ada nilai kosong maupun tanggal ganda. Satu tahun terakhir dijadikan data
+      uji, dan periode itu mencakup crash awal pandemi COVID-19.
+    </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/saham-harga-historis.png" alt="Grafik harga historis. AAPL datar selama puluhan tahun lalu naik tajam sejak sekitar 2005 hingga di atas 300 USD. AMD naik turun dengan beberapa puncak sekitar 2000 dan 2006, lalu naik tajam di akhir data." width="1400" height="400" loading="lazy">
+      <figcaption>AAPL terus naik dan berubah skala, sedangkan AMD bergerak naik turun.</figcaption>
+    </figure>
+  </section>
+
+  <!-- ------------------------------------------------------------ alur -->
+  <section class="detail-bagian">
+    <h2>Cara kerja</h2>
+    <ol class="alur">
+      <li><strong>Pembagian waktu</strong><span>Satu tahun terakhir untuk uji, sisanya untuk latih. Data tidak diacak karena urutan waktu penting.</span></li>
+      <li><strong>Scaling</strong><span><code>MinMaxScaler</code> hanya di-fit pada data latih, supaya informasi data uji tidak bocor.</span></li>
+      <li><strong>Jendela input</strong><span>Harga 5 hari berturut-turut menjadi input, harga hari berikutnya menjadi target.</span></li>
+      <li><strong>Pelatihan</strong><span>10% terakhir data latih menjadi validasi untuk early stopping.</span></li>
+      <li><strong>Evaluasi</strong><span>RMSE, MAE, dan MAPE dihitung setelah prediksi dikembalikan ke skala USD.</span></li>
+    </ol>
+  </section>
+
+  <!-- ------------------------------------------------------------ temuan -->
+  <section class="detail-bagian">
+    <h2>Temuan dari eksperimen</h2>
+
+    <div class="keputusan">
+      <h3>Model yang lebih besar tidak membantu</h3>
+      <p>
+        Menumpuk dua layer LSTM, menambah dropout, atau menambah layer Dense tidak konsisten membaik.
+        Varian paling kompleks justru paling buruk untuk AMD, dengan RMSE 3,28 dibanding 1,44 pada baseline.
+        Satu-satunya perubahan arsitektur yang membaik di kedua saham adalah yang paling sederhana:
+        mengganti aktivasi ReLU menjadi tanh.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Yang membantu adalah mengubah apa yang diprediksi</h3>
+      <p>
+        Uji Augmented Dickey-Fuller menunjukkan harga AAPL tidak stasioner (p-value 0,999), sedangkan
+        selisih harga hariannya stasioner (p-value di bawah 0,001). Karena itu model dilatih memprediksi
+        selisih terhadap harga hari terakhir di jendela input, lalu hasilnya dijumlahkan kembali dengan harga itu.
+      </p>
+      <p>
+        Dengan arsitektur yang sama persis, RMSE AAPL turun dari 11,37 menjadi 6,32. Mengganti fungsi loss
+        atau learning rate setelahnya tidak mengubah hasil secara berarti.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Perbaikan terbesar ada di saham yang paling tidak stasioner</h3>
+      <p>
+        Harga AAPL naik ratusan kali lipat selama periode data, sedangkan AMD bergerak naik turun.
+        Perubahan target membantu AAPL jauh lebih banyak daripada AMD.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Kesimpulan diuji di dua saham</h3>
+      <p>
+        Setiap varian dijalankan pada AAPL dan AMD sekaligus. Perubahan yang hanya membantu satu saham
+        tidak dipilih, supaya kesimpulannya tidak kebetulan cocok dengan satu data saja.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ hasil -->
+  <section class="detail-bagian">
+    <h2>Hasil</h2>
+    <p>Beberapa varian penting dari sepuluh yang diuji, dengan RMSE di data uji dalam USD:</p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Varian</th><th class="angka">AAPL</th><th class="angka">AMD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Baseline: LSTM(50, ReLU), target harga</td><td class="angka">18,85</td><td class="angka">1,44</td></tr>
+          <tr><td>Aktivasi diganti tanh</td><td class="angka">11,37</td><td class="angka">1,42</td></tr>
+          <tr><td>Dua layer LSTM, dropout 0,1</td><td class="angka">11,01</td><td class="angka">1,45</td></tr>
+          <tr><td>Dua layer LSTM, dropout 0,2, Dense(16)</td><td class="angka">15,48</td><td class="angka">3,28</td></tr>
+          <tr><td>Bidirectional LSTM</td><td class="angka">11,02</td><td class="angka">1,81</td></tr>
+          <tr class="baris-utama"><td>Final: tanh, target selisih harga</td><td class="angka">6,32</td><td class="angka">1,38</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Hasil lengkap model final dibanding baseline:</p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Saham</th><th>Model</th><th class="angka">RMSE</th><th class="angka">MAE</th><th class="angka">MAPE</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>AAPL</td><td>Baseline</td><td class="angka">18,85</td><td class="angka">12,44</td><td class="angka">4,66%</td></tr>
+          <tr class="baris-utama"><td>AAPL</td><td>Final</td><td class="angka">6,32</td><td class="angka">3,94</td><td class="angka">1,61%</td></tr>
+          <tr><td>AMD</td><td>Baseline</td><td class="angka">1,44</td><td class="angka">0,94</td><td class="angka">2,51%</td></tr>
+          <tr class="baris-utama"><td>AMD</td><td>Final</td><td class="angka">1,38</td><td class="angka">0,92</td><td class="angka">2,46%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ keterbatasan -->
+  <section class="detail-bagian">
+    <h2>Keterbatasan</h2>
+    <ul class="poin">
+      <li>
+        Model belum dibandingkan dengan patokan paling sederhana untuk data saham, yaitu "harga besok sama
+        dengan harga hari ini". Model final memprediksi selisih dari harga terakhir, jadi perbandingan ini
+        perlu untuk menunjukkan seberapa besar nilai tambahnya.
+      </li>
+      <li>
+        Error membesar saat pasar bergejolak. Residual tersebar di sekitar nol tanpa pola terhadap waktu,
+        kecuali pada crash Maret 2020, ketika error AAPL melebar sampai sekitar 35 USD.
+      </li>
+      <li>Hanya memakai harga penutupan. Volume, harga saham lain, dan berita tidak dipakai.</li>
+      <li>Satu kali pembagian data latih dan uji. Hasil bisa berbeda di periode lain.</li>
+    </ul>
+  </section>
+
+  <ul class="tag detail-tag">
+    <li>Python</li><li>TensorFlow</li><li>Keras</li><li>LSTM</li><li>statsmodels</li><li>scikit-learn</li>
+  </ul>
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
