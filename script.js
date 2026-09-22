@@ -16,6 +16,96 @@ document.querySelectorAll("[data-cek-file]").forEach(function (tombol) {
     });
 });
 
+// ------------------------------------------------------------------ menu samping (laci)
+// Laci dibuat di sini, bukan ditulis di setiap halaman, supaya isinya cukup diubah di satu tempat.
+// Proyek baru cukup ditambahkan ke daftar PROYEK.
+var PROYEK = [
+  ["Tokopedia Market Dashboard", "tokopedia.html"],
+  ["bfull — Pesan Makanan Kantin", "bfull.html"],
+  ["Credit Score Classification", "credit-score.html"],
+  ["Prediksi Harga Saham dengan LSTM", "prediksi-saham.html"],
+  ["Prediksi Klaim Asuransi Kesehatan", "prediksi-klaim.html"]
+];
+
+(function buatLaci() {
+  // Halaman detail ada di folder proyek/, jadi alamat ke halaman utama perlu awalan "../".
+  var dalamProyek = /\/proyek\//.test(window.location.pathname);
+  var akar = dalamProyek ? "../" : "";
+  var halamanIni = window.location.pathname.split("/").pop() || "index.html";
+
+  function tautan(href, teks, sekarang) {
+    return '<a href="' + href + '"' + (sekarang ? ' aria-current="page"' : "") + ">" + teks + "</a>";
+  }
+
+  var daftarProyek = PROYEK.map(function (p) {
+    return "<li>" + tautan(akar + "proyek/" + p[1], p[0], dalamProyek && halamanIni === p[1]) + "</li>";
+  }).join("");
+
+  var laci = document.createElement("nav");
+  laci.id = "laci";
+  laci.className = "laci";
+  laci.setAttribute("aria-label", "Menu samping");
+  laci.innerHTML =
+    '<div class="laci-kepala">' +
+      '<span class="laci-nama">Vinson Nicholas Sorensen</span>' +
+      '<button type="button" class="laci-tutup" aria-label="Tutup menu">×</button>' +
+    "</div>" +
+    '<p class="laci-judul">Navigasi</p>' +
+    "<ul>" +
+      // Di halaman utama, Beranda cukup menggulir ke atas, tidak memuat ulang halaman.
+      "<li>" + tautan(dalamProyek ? akar + "index.html" : "#konten", "Beranda", !dalamProyek) + "</li>" +
+      "<li>" + tautan(akar + "index.html#about", "About") + "</li>" +
+      "<li>" + tautan(akar + "index.html#proyek", "Proyek") + "</li>" +
+      "<li>" + tautan(akar + "index.html#kontak", "Kontak") + "</li>" +
+    "</ul>" +
+    '<p class="laci-judul">Proyek</p>' +
+    "<ul>" + daftarProyek + "</ul>" +
+    '<p class="laci-judul">Temukan saya</p>' +
+    "<ul>" +
+      '<li><a href="https://github.com/vinsonns24-lgtm" target="_blank" rel="noopener">GitHub ↗</a></li>' +
+      '<li><a href="https://www.linkedin.com/in/vinson-nicholas-sorensen-231737326" target="_blank" rel="noopener">LinkedIn ↗</a></li>' +
+      '<li><a href="mailto:vinson.sorensen@binus.ac.id">Email</a></li>' +
+    "</ul>";
+
+  var latar = document.createElement("div");
+  latar.className = "laci-latar";
+
+  var tombol = document.createElement("button");
+  tombol.type = "button";
+  tombol.className = "tombol-menu";
+  tombol.setAttribute("aria-label", "Buka menu");
+  tombol.setAttribute("aria-controls", "laci");
+  tombol.setAttribute("aria-expanded", "false");
+  tombol.innerHTML = "<span></span><span></span><span></span>";
+
+  var header = document.querySelector(".header");
+  header.insertBefore(tombol, header.firstChild);
+  document.body.appendChild(latar);
+  document.body.appendChild(laci);
+
+  function buka() {
+    document.body.classList.add("laci-buka");
+    tombol.setAttribute("aria-expanded", "true");
+    laci.querySelector(".laci-tutup").focus();
+  }
+  function tutup(kembalikanFokus) {
+    document.body.classList.remove("laci-buka");
+    tombol.setAttribute("aria-expanded", "false");
+    if (kembalikanFokus) tombol.focus();
+  }
+
+  tombol.addEventListener("click", buka);
+  laci.querySelector(".laci-tutup").addEventListener("click", function () { tutup(true); });
+  latar.addEventListener("click", function () { tutup(true); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && document.body.classList.contains("laci-buka")) tutup(true);
+  });
+  // Laci ditutup saat salah satu tautannya dipilih, termasuk tautan ke bagian di halaman yang sama.
+  laci.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () { tutup(false); });
+  });
+})();
+
 // ------------------------------------------------------------------ interaksi
 // Semua animasi dilewati kalau pengunjung memilih "kurangi gerakan" di perangkatnya.
 var kurangiGerak = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
