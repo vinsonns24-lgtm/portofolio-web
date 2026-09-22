@@ -5,8 +5,9 @@ Website portofolio berisi kumpulan proyek data. Dibuat dengan HTML, CSS, dan sed
 ## Isi folder
 
 ```
-index.html     seluruh isi halaman
-styles.css     warna, tata letak, dan tampilan kartu
+index.html     halaman utama: profil, kartu proyek, tentang, kontak
+proyek/        satu halaman detail untuk setiap proyek
+styles.css     warna, tata letak, dan tampilan kartu (dipakai semua halaman)
 script.js      menulis tahun berjalan di footer
 assets/        foto profil dan file PDF portofolio
 ```
@@ -23,7 +24,7 @@ Lalu buka http://localhost:8000.
 
 ## Yang masih perlu diisi
 
-1. Foto profil. Simpan fotomu sebagai `assets/foto-profil.jpg`, lalu di `index.html` ganti `assets/foto-profil.svg` menjadi `assets/foto-profil.jpg`. Ukuran yang cocok sekitar 720x900 piksel (potret).
+1. Foto profil. Simpan fotomu sebagai `assets/foto-profil.jpg`, dan foto langsung muncul tanpa perlu mengubah kode. Selama filenya belum ada, gambar placeholder yang tampil. Foto ditampilkan kecil dan bulat, jadi foto potret dengan wajah di sepertiga atas sudah pas.
 2. Dua file PDF, yaitu CV dan portofolio:
 
    | Tombol | Nama file yang diharapkan |
@@ -36,14 +37,16 @@ Lalu buka http://localhost:8000.
 
 ## Menambah proyek baru
 
-Di `index.html`, bagian `<section id="proyek">`, salin satu blok `<article class="kartu">` lalu ganti isinya:
+Setiap proyek punya dua bagian: kartu ringkas di halaman utama, dan halaman detail di folder `proyek/`.
 
-- `href` pada `tautan-kartu` diarahkan ke repo GitHub proyek itu. Seluruh kartu otomatis bisa diklik.
-- `<ul class="poin">` diisi dua sampai tiga temuan utama.
-- `<ul class="tag">` diisi teknologi yang dipakai.
-- `kartu-tautan` diisi link demo, kalau ada.
+1. **Halaman detail.** Salin `proyek/credit-score.html` menjadi misalnya `proyek/nama-proyek.html`, lalu ganti isinya. Urutan bagiannya: masalah, data, alur, keputusan penting, hasil, keterbatasan, langkah berikutnya. Link GitHub dan demo ditaruh di tombol bagian atas.
+2. **Kartu.** Di `index.html`, bagian `<section id="proyek">`, salin satu blok `<article class="kartu">` lalu ganti isinya:
+   - Judul (`<h3>`) diarahkan ke halaman detail tadi.
+   - Satu kalimat ringkasan, sebaiknya memuat satu angka atau temuan utama.
+   - `<ul class="tag">` diisi paling banyak tiga teknologi utama.
+   - `<ul class="kartu-aksi">` berisi tiga pilihan: demo ("Buka dashboard ↗" atau "Buka aplikasi ↗"), "GitHub ↗", lalu "Penjelasan lengkap →" dengan kelas `aksi-detail`. Kalau proyeknya belum punya demo, hapus saja pilihan pertama.
 
-Kartu bertanda `kartu-kosong` adalah tempat kosong untuk proyek berikutnya. Hapus satu setiap kali ada proyek baru.
+Gambar untuk halaman detail disimpan di `assets/proyek/`.
 
 ## Deploy
 

@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Credit Score Classification — Vinson Nicholas Sorensen</title>
+<meta name="description" content="Model klasifikasi skor kredit nasabah dengan pipeline pelatihan, MLflow, Streamlit, dan AWS SageMaker. Proyek akhir mata kuliah Model Deployment, BINUS University.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="../index.html">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="../index.html#proyek">Proyek</a>
+    <a href="../index.html#tentang">Tentang</a>
+    <a href="../index.html#kontak">Kontak</a>
+  </nav>
+</header>
+
+<main id="konten" class="detail">
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+  <p class="label-kecil">Machine learning · Model deployment</p>
+  <h1>Credit Score Classification</h1>
+  <p class="paragraf-besar">
+    Model yang menggolongkan skor kredit nasabah menjadi Good, Standard, atau Poor dari data keuangan
+    dan perilaku pembayaran, beserta seluruh jalur dari data mentah sampai model yang bisa dipakai.
+    Proyek akhir mata kuliah Model Deployment, BINUS University.
+  </p>
+
+  <p class="detail-tautan">
+    <a class="tombol tombol-utama" href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">
+      Lihat kode di GitHub
+    </a>
+  </p>
+
+  <ul class="angka-kunci">
+    <li><strong>25.000</strong><span>catatan bulanan</span></li>
+    <li><strong>11.254</strong><span>nasabah</span></li>
+    <li><strong>4</strong><span>model dibandingkan</span></li>
+    <li><strong>0,69</strong><span>F1 macro data uji</span></li>
+  </ul>
+
+  <!-- ------------------------------------------------------------ ringkasan -->
+  <section class="detail-bagian">
+    <h2>Masalah</h2>
+    <p>
+      Lembaga keuangan perlu menilai risiko kredit setiap nasabah sebelum memberi pinjaman atau menaikkan
+      limit. Penilaian manual lambat dan tidak konsisten. Proyek ini membangun model yang memberi label
+      Good, Standard, atau Poor dari 21 atribut nasabah, seperti pendapatan, jumlah pinjaman, keterlambatan
+      bayar, dan lama riwayat kredit.
+    </p>
+    <p>
+      Fokus mata kuliahnya adalah <em>deployment</em>: model tidak berhenti di notebook, tetapi dikemas
+      dalam pipeline yang bisa dijalankan ulang, dicatat di MLflow, dipakai lewat aplikasi web, dan
+      dipindahkan ke AWS SageMaker.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ data -->
+  <section class="detail-bagian">
+    <h2>Data</h2>
+    <p>
+      Dataset berisi 25.000 baris dan 28 kolom. Kelasnya tidak seimbang: Standard 53%, Poor 29%,
+      dan Good 18%. Sebagian besar waktu habis untuk membersihkan data, karena hampir setiap kolom
+      punya masalah:
+    </p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Masalah</th><th>Contoh</th><th>Penanganan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Isian pengganti yang kotor</td><td><code>_______</code>, <code>#F%$D@*&amp;8</code>, <code>NM</code></td><td>Diganti NaN</td></tr>
+          <tr><td>Angka tersimpan sebagai teks</td><td><code>20364.57_</code>, <code>3_</code></td><td>Karakter non-angka dibuang</td></tr>
+          <tr><td>Lama riwayat kredit berupa kalimat</td><td><code>9 Years and 8 Months</code></td><td>Diubah jadi 116 bulan</td></tr>
+          <tr><td>Nilai salah input</td><td>umur 4824, pinjaman -100, bunga 1663%</td><td>Diganti NaN, lalu diisi median</td></tr>
+          <tr><td>Satu nasabah di banyak baris</td><td>25.000 baris dari 11.254 nasabah</td><td>Data dibagi per nasabah</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ alur -->
+  <section class="detail-bagian">
+    <h2>Alur pipeline</h2>
+    <p>Setiap tahap adalah satu kelas Python terpisah, dan <code>pipeline.py</code> menjalankannya berurutan.</p>
+    <ol class="alur">
+      <li><strong>Ingestion</strong><span>Memuat CSV dan memeriksa kolom target ada.</span></li>
+      <li><strong>Preprocessing</strong><span>Membersihkan data dan membaginya per nasabah: 80% latih, 20% uji.</span></li>
+      <li><strong>Training</strong><span>GridSearchCV untuk 4 model. Setiap kombinasi hyperparameter dicatat di MLflow.</span></li>
+      <li><strong>Evaluasi</strong><span>Model terbaik diuji sekali pada data uji.</span></li>
+      <li><strong>Deployment gate</strong><span>Model hanya disetujui kalau F1 macro minimal 0,65.</span></li>
+    </ol>
+  </section>
+
+  <!-- ------------------------------------------------------------ keputusan -->
+  <section class="detail-bagian">
+    <h2>Keputusan penting</h2>
+
+    <div class="keputusan">
+      <h3>Data dibagi per nasabah, bukan per baris</h3>
+      <p>
+        Satu nasabah dicatat setiap bulan, sampai tujuh kali, dan datanya hampir sama dari bulan ke bulan.
+        Kalau dibagi acak per baris, sekitar 80% baris di data uji milik nasabah yang juga ada di data latih.
+        Model jadi dinilai pada orang yang sudah pernah dilihatnya.
+      </p>
+      <p>
+        Karena itu pembagian data memakai <code>GroupShuffleSplit</code> dan validasi silang memakai
+        <code>StratifiedGroupKFold</code>, keduanya berdasarkan ID nasabah. Dampaknya terlihat di MLflow:
+        skor validasi Random Forest turun dari 0,697 menjadi 0,669. Skor yang lebih rendah itu yang jujur.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Nilai salah input dianggap tidak diketahui, bukan dipotong</h3>
+      <p>
+        Cara umum menangani umur 4824 adalah memotongnya ke batas atas, misalnya 100. Hasilnya ratusan
+        nasabah "berumur 100 tahun" yang sebenarnya tidak ada, dan model belajar dari nilai palsu itu.
+        Di sini nilai seperti itu diganti NaN lalu diisi median.
+      </p>
+      <p>
+        Batas wajar tiap kolom diambil dari data, bukan ditebak. Contohnya suku bunga: nilai asli ada di
+        1–34%, tidak ada satu pun nilai di 35–72%, dan nilai rusak mulai dari 73%.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>F1 macro sebagai metrik utama</h3>
+      <p>
+        Menebak "Standard" untuk semua nasabah sudah memberi accuracy 53%, padahal model seperti itu
+        tidak berguna. F1 macro menghitung rata-rata ketiga kelas dengan bobot sama, jadi kelas kecil
+        seperti Good dan Poor ikut menentukan skor.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Pembersihan yang sama saat pelatihan dan pemakaian</h3>
+      <p>
+        Model disimpan sebagai satu <code>sklearn.Pipeline</code>: imputasi, scaling, one-hot encoding,
+        lalu classifier. Aplikasi Streamlit juga memanggil fungsi pembersihan yang sama dengan pipeline
+        pelatihan. Dengan begitu data dari form diperlakukan persis seperti data latih.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ hasil -->
+  <section class="detail-bagian">
+    <h2>Hasil</h2>
+    <p>Empat model dibandingkan dengan validasi silang 3-fold pada data latih:</p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Model</th><th class="angka">F1 macro validasi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Logistic Regression</td><td class="angka">0,640</td></tr>
+          <tr><td>Gradient Boosting</td><td class="angka">0,653</td></tr>
+          <tr><td>Decision Tree</td><td class="angka">0,656</td></tr>
+          <tr class="baris-utama"><td>Random Forest</td><td class="angka">0,669</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Random Forest terpilih, lalu diuji pada 5.011 baris data uji dari nasabah yang tidak pernah dilihat:</p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Metrik data uji</th><th class="angka">Random Forest</th><th class="angka">Selalu menebak "Standard"</th></tr>
+        </thead>
+        <tbody>
+          <tr class="baris-utama"><td>F1 macro</td><td class="angka">0,689</td><td class="angka">0,230</td></tr>
+          <tr><td>Accuracy</td><td class="angka">0,693</td><td class="angka">0,528</td></tr>
+          <tr><td>Recall macro</td><td class="angka">0,737</td><td class="angka">0,333</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Per kelas, di data uji:</p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Kelas</th><th class="angka">Jumlah</th><th class="angka">Recall</th><th class="angka">Precision</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Good</td><td class="angka">909</td><td class="angka">0,85</td><td class="angka">0,54</td></tr>
+          <tr><td>Standard</td><td class="angka">2.645</td><td class="angka">0,60</td><td class="angka">0,84</td></tr>
+          <tr><td>Poor</td><td class="angka">1.457</td><td class="angka">0,77</td><td class="angka">0,65</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="catatan-kecil">
+      Recall: dari semua nasabah di kelas itu, berapa persen yang dikenali. Precision: dari semua
+      tebakan kelas itu, berapa persen yang benar.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ deployment -->
+  <section class="detail-bagian">
+    <h2>Deployment</h2>
+    <p>
+      <strong>Lokal.</strong> Aplikasi Streamlit menerima data satu nasabah lewat form, lalu menampilkan
+      label beserta peluang tiap kelas. Batas input di form mengikuti batas wajar yang dipakai saat
+      pelatihan, supaya tidak ada nilai yang diam-diam diabaikan model.
+    </p>
+    <p>
+      <strong>AWS.</strong> Pipeline yang sama ditulis ulang untuk SageMaker Pipelines, dengan tahap
+      ingestion, preprocessing, training, dan evaluation, lalu dijalankan dalam local mode. Model dikemas,
+      diunggah ke S3, dan di-deploy sebagai endpoint di instance <code>ml.m5.large</code>. Endpoint diuji
+      dengan satu permintaan prediksi, lalu dihapus supaya tidak terus menimbulkan biaya.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ keterbatasan -->
+  <section class="detail-bagian">
+    <h2>Keterbatasan</h2>
+    <ul class="poin">
+      <li>
+        Dari 1.457 nasabah Poor di data uji, 167 (11%) digolongkan Good. Bagi pemberi kredit, ini
+        kesalahan yang paling mahal, karena nasabah berisiko tinggi bisa lolos.
+      </li>
+      <li>
+        Recall Standard hanya 0,60. Banyak nasabah Standard digeser ke Good (488) atau Poor (569),
+        kemungkinan karena pengaturan <code>class_weight="balanced"</code> menaikkan bobot kelas yang lebih kecil.
+      </li>
+      <li>
+        F1 di data latih 0,84, sedangkan di data uji 0,69. Selisih ini menandakan model masih cenderung
+        menghafal data latih.
+      </li>
+      <li>
+        Setiap baris diperlakukan terpisah. Model belum memanfaatkan perubahan kondisi nasabah dari bulan ke bulan.
+      </li>
+      <li>
+        Belum ada demo yang bisa dicoba: endpoint AWS sudah dihapus, dan file model berukuran 64 MB.
+      </li>
+    </ul>
+  </section>
+
+  <section class="detail-bagian">
+    <h2>Langkah berikutnya</h2>
+    <ul class="poin">
+      <li>Menambah fitur tren per nasabah, misalnya perubahan jumlah keterlambatan bayar dari bulan sebelumnya.</li>
+      <li>Menggeser ambang keputusan supaya lebih sedikit nasabah Poor yang lolos sebagai Good, dengan menerima lebih banyak peringatan palsu.</li>
+      <li>Melatih versi model yang lebih ringan supaya aplikasinya bisa dipasang di Streamlit Community Cloud.</li>
+    </ul>
+  </section>
+
+  <ul class="tag detail-tag">
+    <li>Python</li><li>pandas</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li><li>Amazon S3</li>
+  </ul>
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

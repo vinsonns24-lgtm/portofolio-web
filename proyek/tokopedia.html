@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tokopedia Market Dashboard — Vinson Nicholas Sorensen</title>
+<meta name="description" content="Riset pasar Tokopedia dari 29.519 listing produk dan 40.607 ulasan pembeli: delapan notebook analisis, model sentimen berbahasa Indonesia, dan dashboard Streamlit.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="../index.html">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="../index.html#proyek">Proyek</a>
+    <a href="../index.html#tentang">Tentang</a>
+    <a href="../index.html#kontak">Kontak</a>
+  </nav>
+</header>
+
+<main id="konten" class="detail">
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+  <p class="label-kecil">Analisis data · Machine learning</p>
+  <h1>Tokopedia Market Dashboard</h1>
+  <p class="paragraf-besar">
+    Riset pasar Tokopedia dari dua sisi: apa yang dijual penjual (29.519 listing produk) dan apa yang
+    dirasakan pembeli (40.607 ulasan berbahasa Indonesia). Hasilnya berupa delapan notebook analisis,
+    satu model sentimen, dan dashboard dua halaman.
+  </p>
+
+  <p class="detail-tautan">
+    <a class="tombol tombol-utama" href="https://tokopedia-market-dashboard.streamlit.app/" target="_blank" rel="noopener">
+      Buka dashboard
+    </a>
+    <a class="tombol tombol-garis" href="https://github.com/vinsonns24-lgtm/Tokopedia-Market-Dashboard" target="_blank" rel="noopener">
+      Lihat kode di GitHub
+    </a>
+  </p>
+  <p class="catatan-kecil">
+    Dashboard di Streamlit Community Cloud tidur kalau tidak dikunjungi selama 12 jam. Kalau muncul
+    tombol untuk membangunkannya, klik lalu tunggu sekitar satu menit.
+  </p>
+
+  <ul class="angka-kunci">
+    <li><strong>29.519</strong><span>listing produk</span></li>
+    <li><strong>40.607</strong><span>ulasan pembeli</span></li>
+    <li><strong>8</strong><span>notebook analisis</span></li>
+    <li><strong>0,62</strong><span>F1 keluhan data uji</span></li>
+  </ul>
+
+  <figure class="gambar">
+    <img src="../assets/proyek/tokopedia-pasar-produk.png" alt="Halaman Pasar Produk: kartu ringkasan jumlah produk, jumlah toko, median harga, dan persentase produk berdiskon, grafik median harga per kategori, serta filter kategori, provinsi, dan rentang harga." width="1440" height="960" loading="lazy">
+    <figcaption>Halaman Pasar Produk, dengan filter kategori, provinsi, dan harga.</figcaption>
+  </figure>
+
+  <!-- ------------------------------------------------------------ masalah -->
+  <section class="detail-bagian">
+    <h2>Masalah</h2>
+    <p>
+      Proyek ini melihat pasar dari sudut pandang calon penjual: di kategori mana harga produk berada,
+      apakah diskon benar-benar membuat produk laris, dan apa yang paling sering dikeluhkan pembeli.
+      Pertanyaan yang dijawab:
+    </p>
+    <ol class="poin">
+      <li>Bagaimana sebaran harga di setiap kategori?</li>
+      <li>Kota dan provinsi mana yang punya penjual paling aktif dan penjualan tertinggi?</li>
+      <li>Apakah diskon yang lebih besar selalu membuat produk lebih laris?</li>
+      <li>Apakah kata seperti "premium" atau "original" di nama produk berkaitan dengan harganya?</li>
+      <li>Bisakah ulasan negatif dikenali otomatis dari teksnya?</li>
+      <li>Apa yang paling sering dikeluhkan pembeli, dan apakah berbeda antarkategori?</li>
+    </ol>
+  </section>
+
+  <!-- ------------------------------------------------------------ data -->
+  <section class="detail-bagian">
+    <h2>Data</h2>
+    <p>
+      Dua dataset publik dari Kaggle: listing produk Tokopedia (lisensi Apache 2.0) dan ulasan produk
+      Tokopedia tahun 2019 (lisensi MIT). Keduanya berasal dari periode dan sumber berbeda, sehingga tidak
+      bisa digabung per produk dan hanya disandingkan di level kategori.
+    </p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Masalah</th><th>Contoh</th><th>Penanganan</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Jumlah terjual berupa teks dengan belasan format</td><td><code>1rb+ terjual</code>, <code>4.95rb+</code>, <code>1jt+</code></td><td>Diubah jadi angka. Titik dibaca sebagai ribuan atau desimal sesuai formatnya</td></tr>
+          <tr><td>Tidak ada kolom kategori</td><td>Hanya nama produk</td><td>Kategori dibuat dari kata kunci nama produk, dengan pencocokan kata utuh</td></tr>
+          <tr><td>Lokasi toko ditulis dalam 322 variasi</td><td>2.834 baris hanya bertuliskan "Indonesia"</td><td>Dipetakan ke kota dan provinsi dengan tabel referensi buatan sendiri</td></tr>
+          <tr><td>URL tidak bisa dipakai mendeteksi duplikat</td><td>Sekitar 34% hanya link halaman toko</td><td>Duplikat tidak dideteksi lewat URL</td></tr>
+          <tr><td>Teks ulasan informal</td><td>kode HTML, "baguuus", "tidak" dalam 10 ejaan</td><td>Dibersihkan dengan satu fungsi yang dipakai model dan dashboard</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ temuan -->
+  <section class="detail-bagian">
+    <h2>Temuan utama</h2>
+
+    <div class="keputusan">
+      <h3>Rating 5,0 bukan tanda produk terbaik</h3>
+      <p>
+        Rating sempurna lebih sering berarti produk baru punya sedikit pembeli. Median jumlah terjual
+        produk ber-rating 5,0 hanya 16, sedangkan produk ber-rating 4,9 mencapai 500.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Diskon membantu, tetapi diskon besar tidak menjamin laris</h3>
+      <p>
+        Produk berdiskon memang lebih laris (median terjual 100 dibanding 26). Namun dua pertiga produk
+        dengan diskon di atas 50% tetap terjual di bawah 1.000.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>"Premium" justru berkaitan dengan harga lebih murah</h3>
+      <p>
+        Kata "premium" di nama produk berkaitan dengan harga di bawah median kategorinya (0,83 kali). Kata "original" dan
+        "official" berkaitan dengan harga 1,35 sampai 1,48 kali median kategori.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Penjual terpusat di Jakarta dan sekitarnya</h3>
+      <p>
+        DKI Jakarta menyumbang 46% toko dan 51% total terjual. Bersama Jawa Barat dan Banten, porsinya
+        sekitar 90%.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Pembeli paling sering mengeluhkan kualitas produk</h3>
+      <p>
+        Kualitas produk disebut di 28% ulasan negatif, dibanding 16% ulasan positif. Pengiriman dan
+        pelayanan penjual justru lebih sering dipuji daripada dikeluhkan. Di kategori handphone, 38%
+        keluhan berasal dari hanya dua produk.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ model -->
+  <section class="detail-bagian">
+    <h2>Model sentimen</h2>
+    <p>
+      Hanya 2,4% ulasan yang negatif. Model yang selalu menebak "positif" sudah mendapat akurasi 97,6%
+      tanpa menemukan satu pun keluhan, jadi akurasi tidak bisa dipakai. Model dinilai dari F1 kelas negatif,
+      dan setiap langkah perbaikan diukur dengan cross-validation di data latih:
+    </p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Langkah</th><th class="angka">F1 negatif</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Selalu menebak positif</td><td class="angka">0</td></tr>
+          <tr><td>TF-IDF (1–2 kata) + Logistic Regression</td><td class="angka">0,34</td></tr>
+          <tr><td>Dengan <code>class_weight="balanced"</code></td><td class="angka">0,50</td></tr>
+          <tr><td>Pengaturan terbaik dari GridSearchCV</td><td class="angka">0,58</td></tr>
+          <tr class="baris-utama"><td>Ambang keputusan disetel dengan cross-validation</td><td class="angka">0,63</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Di data uji yang hanya dipakai sekali di akhir, model mendapat F1 0,62, precision 65%, dan recall 59%.
+    </p>
+    <p>
+      Dua model tambahan juga dicoba dan hasilnya dilaporkan apa adanya. Menebak kategori dari teks ulasan
+      hanya mencapai akurasi 41%, dibanding patokan 39%, karena kebanyakan ulasan membahas pengiriman dan
+      penjual, bukan produknya. Menebak bintang 1 sampai 5 juga lemah, karena ulasan bintang 4 dan 5 hampir
+      tidak bisa dibedakan dari teksnya. Kedua hasil ini menjadi alasan model sentimen memakai dua kelas saja.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ dashboard -->
+  <section class="detail-bagian">
+    <h2>Dashboard</h2>
+    <p>
+      <strong>Pasar Produk</strong> berisi filter kategori, provinsi, dan harga, dengan tab harga per
+      kategori, wilayah, diskon dan rating, serta kata kunci di nama produk.
+      <strong>Analisis Ulasan</strong> berisi keluhan per kategori, tema keluhan, ringkasan kinerja model,
+      dan kotak untuk mencoba model sentimen dengan ulasan sendiri.
+    </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/tokopedia-analisis-ulasan.png" alt="Halaman Analisis Ulasan dashboard Tokopedia." width="1440" height="960" loading="lazy">
+      <figcaption>Halaman Analisis Ulasan.</figcaption>
+    </figure>
+    <p>
+      Kode pembersihan data hanya ada di satu folder (<code>src</code>). Notebook, pipeline, dan dashboard
+      memakai fungsi yang sama, dan fungsi-fungsi itu diuji otomatis dengan pytest.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ keterbatasan -->
+  <section class="detail-bagian">
+    <h2>Keterbatasan</h2>
+    <ul class="poin">
+      <li>Jumlah terjual adalah batas bawah, karena "1rb+" berarti minimal 1.000.</li>
+      <li>Kategori berbasis kata kunci tidak sempurna, dan 11% produk masuk "Lainnya".</li>
+      <li>Label sentimen berasal dari rating. Sekitar 4% ulasan bintang 1 dan 2 isinya justru pujian.</li>
+      <li>Ulasan berasal dari tahun 2019 dan dari sekitar 160 toko, dengan ulasan negatif yang didominasi kategori handphone.</li>
+      <li>Semua data adalah potret satu waktu, sehingga hasilnya menunjukkan hubungan, bukan sebab-akibat.</li>
+    </ul>
+  </section>
+
+  <ul class="tag detail-tag">
+    <li>Python</li><li>pandas</li><li>scikit-learn</li><li>matplotlib</li><li>Altair</li><li>Streamlit</li><li>pytest</li>
+  </ul>
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>

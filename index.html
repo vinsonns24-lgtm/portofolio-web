@@ -54,8 +54,9 @@
     </div>
 
     <figure class="foto">
-      <!-- Ganti src di bawah dengan foto asli, misalnya assets/foto-profil.jpg -->
-      <img src="assets/foto-profil.svg" alt="Foto profil Vinson Nicholas Sorensen" width="360" height="440">
+      <!-- Foto disimpan sebagai assets/foto-profil.jpg. Kalau filenya belum ada, gambar placeholder yang tampil. -->
+      <img src="assets/foto-profil.jpg" alt="Foto profil Vinson Nicholas Sorensen" width="220" height="220"
+           onerror="this.onerror=null; this.src='assets/foto-profil.svg';">
       <figcaption>Vinson Nicholas Sorensen</figcaption>
     </figure>
   </section>
@@ -63,95 +64,51 @@
   <section id="proyek" class="bagian">
     <div class="bagian-judul">
       <h2>Proyek</h2>
-      <p>Klik kartu untuk membuka kodenya di GitHub.</p>
+      <p>Setiap proyek bisa dicoba langsung, dilihat kodenya, atau dibaca penjelasan lengkapnya.</p>
     </div>
 
     <div class="kartu-grid">
 
       <article class="kartu">
         <p class="label-kecil">Analisis data · Machine learning</p>
-        <h3>
-          <a class="tautan-kartu" href="https://github.com/vinsonns24-lgtm/Tokopedia-Market-Dashboard" target="_blank" rel="noopener">
-            Tokopedia Market Dashboard
-          </a>
-        </h3>
-        <p>
-          Riset pasar dari 29.519 listing produk dan 40.607 ulasan pembeli Tokopedia. Berisi delapan
-          notebook analisis, model sentimen ulasan berbahasa Indonesia, dan dashboard dua halaman.
-        </p>
-        <ul class="poin">
-          <li>Rating 5,0 ternyata menandakan produk yang baru punya sedikit pembeli, bukan produk terbaik.</li>
-          <li>Diskon besar tidak menjamin produk laris: dua pertiga produk berdiskon di atas 50% tetap sepi.</li>
-          <li>Model sentimen menemukan keluhan dengan F1 sekitar 0,6, dibanding 0 pada tebakan sederhana.</li>
-        </ul>
+        <h3><a href="proyek/tokopedia.html">Tokopedia Market Dashboard</a></h3>
+        <p>Riset pasar dari 29.519 listing dan 40.607 ulasan Tokopedia, dengan model sentimen dan dashboard.</p>
         <ul class="tag">
-          <li>Python</li><li>pandas</li><li>scikit-learn</li><li>Streamlit</li><li>pytest</li>
+          <li>pandas</li><li>scikit-learn</li><li>Streamlit</li>
         </ul>
-        <p class="kartu-tautan">
-          <a href="https://tokopedia-market-dashboard.streamlit.app/" target="_blank" rel="noopener">
-            Buka dashboard →
-          </a>
-          <a href="https://github.com/vinsonns24-lgtm/Tokopedia-Market-Dashboard" target="_blank" rel="noopener">
-            Lihat kode di GitHub →
-          </a>
-        </p>
+        <ul class="kartu-aksi">
+          <li><a href="https://tokopedia-market-dashboard.streamlit.app/" target="_blank" rel="noopener">Buka dashboard ↗</a></li>
+          <li><a href="https://github.com/vinsonns24-lgtm/Tokopedia-Market-Dashboard" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a class="aksi-detail" href="proyek/tokopedia.html">Penjelasan lengkap →</a></li>
+        </ul>
       </article>
 
       <article class="kartu">
         <p class="label-kecil">Aplikasi web dan mobile</p>
-        <h3>
-          <a class="tautan-kartu" href="https://github.com/vinsonns24-lgtm/bfull-master" target="_blank" rel="noopener">
-            bfull — Pesan Makanan Kantin BINUS
-          </a>
-        </h3>
-        <p>
-          Aplikasi untuk memesan makanan di kantin BINUS tanpa mengantre: pilih tenant, bayar nontunai,
-          lalu pantau pesanan sampai siap diambil. Saya rancang dan tulis sendiri untuk tugas mata kuliah
-          Human and Computer Interaction.
-        </p>
-        <ul class="poin">
-          <li>Satu kode untuk web dan Android, memakai Expo dan React Native.</li>
-          <li>Papan antrean menampilkan keramaian tiap tenant beserta perkiraan waktu tunggu.</li>
-          <li>Keranjang dibatasi satu tenant per pesanan, dengan konfirmasi saat pengguna pindah tenant.</li>
-        </ul>
+        <h3><a href="proyek/bfull.html">bfull — Pesan Makanan Kantin BINUS</a></h3>
+        <p>Aplikasi pesan makanan kantin BINUS tanpa mengantre, untuk web dan Android.</p>
         <ul class="tag">
-          <li>React Native</li><li>Expo</li><li>TypeScript</li><li>NativeWind</li>
+          <li>React Native</li><li>Expo</li><li>TypeScript</li>
         </ul>
-        <p class="kartu-tautan">
-          <a href="https://bfull-master.vercel.app/" target="_blank" rel="noopener">
-            Coba aplikasinya →
-          </a>
-          <a href="https://github.com/vinsonns24-lgtm/bfull-master" target="_blank" rel="noopener">
-            Lihat kode di GitHub →
-          </a>
-        </p>
+        <ul class="kartu-aksi">
+          <li><a href="https://bfull-master.vercel.app/" target="_blank" rel="noopener">Buka aplikasi ↗</a></li>
+          <li><a href="https://github.com/vinsonns24-lgtm/bfull-master" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a class="aksi-detail" href="proyek/bfull.html">Penjelasan lengkap →</a></li>
+        </ul>
       </article>
 
       <article class="kartu">
         <p class="label-kecil">Machine learning · Model deployment</p>
-        <h3>
-          <a class="tautan-kartu" href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">
-            Credit Score Classification
-          </a>
-        </h3>
-        <p>
-          Proyek akhir mata kuliah Model Deployment. Model yang menggolongkan skor kredit nasabah
-          menjadi Good, Standard, atau Poor dari 25.000 catatan bulanan milik 11.254 nasabah,
-          lengkap dengan pipeline pelatihan, pencatatan eksperimen, dan aplikasi prediksi.
-        </p>
-        <ul class="poin">
-          <li>Data dibagi per nasabah, bukan per baris, supaya nasabah yang sama tidak muncul di data latih dan data uji sekaligus.</li>
-          <li>Random Forest mencapai F1 macro 0,69 pada data uji, dibanding 0,23 bila selalu menebak kelas terbanyak.</li>
-          <li>Pipeline dijalankan lokal dengan MLflow dan Streamlit, lalu dipindah ke AWS SageMaker hingga model bisa dipanggil lewat endpoint.</li>
-        </ul>
+        <h3><a href="proyek/credit-score.html">Credit Score Classification</a></h3>
+        <p>Menggolongkan skor kredit nasabah dengan F1 0,69, jauh di atas patokan 0,23, lalu di-deploy ke AWS.</p>
         <ul class="tag">
-          <li>Python</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li>
+          <li>scikit-learn</li><li>MLflow</li><li>AWS SageMaker</li>
         </ul>
-        <p class="kartu-tautan">
-          <a href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">
-            Lihat kode di GitHub →
-          </a>
-        </p>
+        <!-- Belum ada demo online. Kalau nanti ada, tambahkan <li> "Buka aplikasi ↗" di urutan pertama. -->
+        <ul class="kartu-aksi">
+          <li><a href="https://github.com/vinsonns24-lgtm/credit-score-classification" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a class="aksi-detail" href="proyek/credit-score.html">Penjelasan lengkap →</a></li>
+        </ul>
       </article>
 
     </div>

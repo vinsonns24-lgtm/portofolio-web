@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>bfull — Vinson Nicholas Sorensen</title>
+<meta name="description" content="bfull, prototipe aplikasi pesan makanan kantin BINUS tanpa mengantre, untuk web dan Android. Dibuat dengan Expo dan React Native untuk mata kuliah Human and Computer Interaction.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+
+<a class="lewati" href="#konten">Lewati ke konten utama</a>
+
+<header class="header">
+  <a class="header-nama" href="../index.html">Vinson Nicholas Sorensen</a>
+  <nav class="header-menu" aria-label="Menu utama">
+    <a href="../index.html#proyek">Proyek</a>
+    <a href="../index.html#tentang">Tentang</a>
+    <a href="../index.html#kontak">Kontak</a>
+  </nav>
+</header>
+
+<main id="konten" class="detail">
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+  <p class="label-kecil">Aplikasi web dan mobile</p>
+  <h1>bfull — Pesan Makanan Kantin BINUS</h1>
+  <p class="paragraf-besar">
+    Prototipe aplikasi untuk memesan makanan di kantin BINUS tanpa mengantre. Mahasiswa memilih tenant,
+    memesan lewat aplikasi, membayar nontunai, lalu memantau pesanannya sampai siap diambil. Dibuat untuk
+    mata kuliah Human and Computer Interaction.
+  </p>
+
+  <p class="detail-tautan">
+    <a class="tombol tombol-utama" href="https://bfull-master.vercel.app/" target="_blank" rel="noopener">
+      Coba aplikasinya
+    </a>
+    <a class="tombol tombol-garis" href="https://github.com/vinsonns24-lgtm/bfull-master" target="_blank" rel="noopener">
+      Lihat kode di GitHub
+    </a>
+  </p>
+  <p class="catatan-kecil">
+    Untuk mencoba, tekan tombol akun demo di halaman masuk, atau pakai email apa pun yang berakhiran
+    <code>@binus.ac.id</code>.
+  </p>
+
+  <ul class="angka-kunci">
+    <li><strong>1</strong><span>kode untuk web dan Android</span></li>
+    <li><strong>7</strong><span>tenant contoh</span></li>
+    <li><strong>21</strong><span>menu contoh</span></li>
+    <li><strong>8</strong><span>kampus BINUS</span></li>
+  </ul>
+
+  <figure class="gambar">
+    <img src="../assets/proyek/bfull-halaman-masuk.png" alt="Halaman masuk bfull versi web: panel oranye bertuliskan Skip the queue, Enjoy instant food, di samping formulir masuk dengan email mahasiswa." width="1280" height="800" loading="lazy">
+    <figcaption>Halaman masuk versi web. Di ponsel, tata letaknya berganti menjadi satu kolom dengan tab di bawah.</figcaption>
+  </figure>
+
+  <!-- ------------------------------------------------------------ masalah -->
+  <section class="detail-bagian">
+    <h2>Masalah</h2>
+    <p>
+      Membeli makan di kantin berarti mengantre di tenant tanpa tahu berapa lama harus menunggu.
+      bfull memindahkan pemesanan ke aplikasi: pesan dari mana
+      saja, bayar nontunai, lalu datang ke tenant hanya saat makanan sudah siap.
+    </p>
+    <p>
+      Proyek ini tugas kelompok, tetapi seluruh perancangan dan penulisan kodenya saya kerjakan sendiri.
+    </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ alur -->
+  <section class="detail-bagian">
+    <h2>Alur pengguna</h2>
+    <ol class="alur">
+      <li><strong>Masuk</strong><span>Dengan email <code>@binus.ac.id</code>, lalu memilih salah satu dari delapan kampus.</span></li>
+      <li><strong>Memilih makanan</strong><span>Lewat daftar tenant, atau lewat daftar menu dengan pencarian dan filter kategori. Setiap menu bisa diberi catatan untuk penjual.</span></li>
+      <li><strong>Keranjang</strong><span>Memakai voucher potongan harga. Total berubah langsung saat jumlah diubah.</span></li>
+      <li><strong>Membayar</strong><span>Pembayaran nontunai dengan QRIS.</span></li>
+      <li><strong>Memantau pesanan</strong><span>Tiga tahap: dikonfirmasi, dimasak, siap diambil.</span></li>
+      <li><strong>Menilai</strong><span>Bintang, tag cepat, dan komentar setelah pesanan diambil.</span></li>
+    </ol>
+  </section>
+
+  <!-- ------------------------------------------------------------ keputusan -->
+  <section class="detail-bagian">
+    <h2>Keputusan desain</h2>
+
+    <div class="keputusan">
+      <h3>Satu tenant per keranjang</h3>
+      <p>
+        Setiap tenant memasak dan menyerahkan pesanannya sendiri. Kalau satu keranjang boleh berisi
+        beberapa tenant, mahasiswa harus menjemput di beberapa tempat dengan waktu siap yang berbeda.
+        Karena itu keranjang dibatasi satu tenant. Saat pengguna menambah menu dari tenant lain, aplikasi
+        meminta konfirmasi dulu, bukan diam-diam mengosongkan keranjang.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Papan antrean sebelum memesan</h3>
+      <p>
+        Beranda menampilkan keramaian setiap tenant dengan label dan warna: sepi, antrean ringan, ramai,
+        atau sangat ramai. Perkiraan waktu tunggu dihitung dari panjang antrean dikali rata-rata waktu per
+        pesanan di tenant itu. Dengan begitu mahasiswa bisa memilih tenant yang lebih sepi sebelum memesan.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Keterlambatan diberitahukan, dan pengguna yang memilih</h3>
+      <p>
+        Kalau kantin lebih ramai dari biasanya, aplikasi memberi tahu bahwa pesanan akan terlambat, lengkap
+        dengan jam siap yang lama dan yang baru. Pengguna lalu memilih: tetap menunggu atau membatalkan pesanan.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Tampilan mengikuti perangkat</h3>
+      <p>
+        Di browser, aplikasi memakai menu atas dan tata letak beberapa kolom. Di ponsel, memakai tab bawah
+        yang mudah dijangkau jempol. Keduanya berasal dari satu kode yang sama.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Akun demo di halaman masuk</h3>
+      <p>
+        Penguji dan dosen bisa langsung mencoba dengan satu tombol, tanpa perlu mendaftar dulu.
+      </p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ teknologi -->
+  <section class="detail-bagian">
+    <h2>Teknologi</h2>
+    <ul class="poin">
+      <li>Expo SDK 56 dan Expo Router untuk navigasi berbasis file.</li>
+      <li>React Native 0.85, React 19, dan TypeScript.</li>
+      <li>NativeWind v4, yaitu Tailwind CSS untuk React Native.</li>
+      <li>AsyncStorage, sehingga keranjang, riwayat, dan favorit tetap ada setelah aplikasi ditutup.</li>
+      <li>GitHub Actions yang menerbitkan ulang versi web setiap ada push ke branch utama.</li>
+    </ul>
+  </section>
+
+  <!-- ------------------------------------------------------------ keterbatasan -->
+  <section class="detail-bagian">
+    <h2>Keterbatasan</h2>
+    <ul class="poin">
+      <li>Ini prototipe untuk tugas kuliah, belum terhubung ke kantin sungguhan.</li>
+      <li>Menu, tenant, dan antrean memakai data contoh di dalam kode. Angka antrean berubah acak setiap 8 detik untuk meniru data langsung.</li>
+      <li>Status pesanan maju otomatis berdasarkan waktu, bukan dari penjual.</li>
+      <li>Pembayaran QRIS hanya tampilan, tanpa transaksi sungguhan.</li>
+      <li>Data pesanan tersimpan di perangkat masing-masing, sehingga tenant tidak bisa melihatnya. Versi sungguhan butuh server bersama.</li>
+    </ul>
+  </section>
+
+  <ul class="tag detail-tag">
+    <li>React Native</li><li>Expo</li><li>TypeScript</li><li>NativeWind</li><li>AsyncStorage</li><li>GitHub Actions</li>
+  </ul>
+
+  <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
+
+</main>
+
+<footer class="footer">
+  <p>Vinson Nicholas Sorensen · Data Science, BINUS University</p>
+  <p>Diperbarui <span id="tahun">2026</span></p>
+</footer>
+
+<script src="../script.js"></script>
+</body>
+</html>
