@@ -52,7 +52,7 @@
     <li><strong>29.519</strong><span>listing produk</span></li>
     <li><strong>40.607</strong><span>ulasan pembeli</span></li>
     <li><strong>8</strong><span>notebook analisis</span></li>
-    <li><strong>0,62</strong><span>F1 keluhan data uji</span></li>
+    <li><strong>0,57</strong><span>F1 keluhan data uji</span></li>
   </ul>
 
   <figure class="gambar">
@@ -163,21 +163,45 @@
         </thead>
         <tbody>
           <tr><td>Selalu menebak positif</td><td class="angka">0</td></tr>
-          <tr><td>TF-IDF (1–2 kata) + Logistic Regression</td><td class="angka">0,34</td></tr>
-          <tr><td>Dengan <code>class_weight="balanced"</code></td><td class="angka">0,50</td></tr>
-          <tr><td>Pengaturan terbaik dari GridSearchCV</td><td class="angka">0,58</td></tr>
-          <tr class="baris-utama"><td>Ambang keputusan disetel dengan cross-validation</td><td class="angka">0,63</td></tr>
+          <tr><td>TF-IDF (1–2 kata) + Logistic Regression</td><td class="angka">0,36</td></tr>
+          <tr><td>Dengan <code>class_weight="balanced"</code></td><td class="angka">0,52</td></tr>
+          <tr><td>Pengaturan terbaik dari GridSearchCV</td><td class="angka">0,59</td></tr>
+          <tr class="baris-utama"><td>Ambang keputusan disetel dengan cross-validation</td><td class="angka">0,62</td></tr>
         </tbody>
       </table>
     </div>
     <p>
-      Di data uji yang hanya dipakai sekali di akhir, model mendapat F1 0,62, precision 65%, dan recall 59%.
+      Data latih dan data uji dibagi per produk, jadi model dinilai dengan ulasan dari produk yang belum
+      pernah dilihatnya. Di data uji yang hanya dipakai sekali di akhir, model mendapat F1 0,57
+      (rentang bootstrap 95%: 0,50 sampai 0,63), precision 63%, dan recall 52%.
     </p>
+  </section>
+
+  <!-- ------------------------------------------------------------ batas model -->
+  <section class="detail-bagian">
+    <h2>Kenapa skornya tidak lebih tinggi</h2>
+    <p>
+      Sebelum mencoba model yang lebih berat, penyebabnya diuji satu per satu. Mengganti pengaturan
+      (<code>C</code> sampai 1000, fitur potongan huruf, gabungan fitur) tidak memberi hasil yang lebih baik.
+      Menambah data masih menaikkan skor, tetapi kenaikannya terus mengecil.
+    </p>
+    <div class="keputusan">
+      <h3>Batasnya ada di label, bukan di model</h3>
+      <p>
+        Label dibuat dari bintang, padahal bintang sering tidak cocok dengan isi ulasan. Sekitar 19% ulasan
+        bintang 1–2 tidak berisi keluhan sama sekali, misalnya "Mantap" atau "Thanks". Sebaliknya, banyak
+        ulasan bintang 4–5 berisi keluhan jelas, seperti "barang yang dikirim rusak, tidak bisa dipakai".
+        Ulasan seperti ini tidak bisa ditebak dengan benar oleh model teks apa pun, jadi langkah berikutnya
+        yang paling menjanjikan adalah melabeli ulang sebagian ulasan berdasarkan isinya.
+      </p>
+    </div>
     <p>
       Dua model tambahan juga dicoba dan hasilnya dilaporkan apa adanya. Menebak kategori dari teks ulasan
       hanya mencapai akurasi 41%, dibanding patokan 39%, karena kebanyakan ulasan membahas pengiriman dan
-      penjual, bukan produknya. Menebak bintang 1 sampai 5 juga lemah, karena ulasan bintang 4 dan 5 hampir
-      tidak bisa dibedakan dari teksnya. Kedua hasil ini menjadi alasan model sentimen memakai dua kelas saja.
+      penjual. Model yang sama mencapai 97% kalau diberi nama produk, jadi yang kurang adalah informasi di
+      teks ulasan, bukan modelnya. Menebak bintang 1 sampai 5 juga lemah: ulasan "terimakasih" muncul 391 kali,
+      dengan 71% diberi bintang 5 dan 26% bintang 4. Kedua hasil ini menjadi alasan model sentimen memakai
+      dua kelas saja.
     </p>
   </section>
 
