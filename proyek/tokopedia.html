@@ -93,7 +93,7 @@
         </thead>
         <tbody>
           <tr><td>Jumlah terjual berupa teks dengan belasan format</td><td><code>1rb+ terjual</code>, <code>4.95rb+</code>, <code>1jt+</code></td><td>Diubah jadi angka. Titik dibaca sebagai ribuan atau desimal sesuai formatnya</td></tr>
-          <tr><td>Tidak ada kolom kategori</td><td>Hanya nama produk</td><td>Kategori dibuat dari kata kunci nama produk, dengan pencocokan kata utuh</td></tr>
+          <tr><td>Tidak ada kolom kategori</td><td>Hanya nama produk</td><td>Kategori dibuat dari kata kunci nama produk, dengan pencocokan kata utuh. Diperiksa manual pada 200 produk acak: sekitar 90% benar</td></tr>
           <tr><td>Lokasi toko ditulis dalam 322 variasi</td><td>2.834 baris hanya bertuliskan "Indonesia"</td><td>Dipetakan ke kota dan provinsi dengan tabel referensi buatan sendiri</td></tr>
           <tr><td>URL tidak bisa dipakai mendeteksi duplikat</td><td>Sekitar 34% hanya link halaman toko</td><td>Duplikat tidak dideteksi lewat URL</td></tr>
           <tr><td>Teks ulasan informal</td><td>kode HTML, "baguuus", "tidak" dalam 10 ejaan</td><td>Dibersihkan dengan satu fungsi yang dipakai model dan dashboard</td></tr>
@@ -125,8 +125,8 @@
     <div class="keputusan">
       <h3>"Premium" justru berkaitan dengan harga lebih murah</h3>
       <p>
-        Kata "premium" di nama produk berkaitan dengan harga di bawah median kategorinya (0,83 kali). Kata "original" dan
-        "official" berkaitan dengan harga 1,35 sampai 1,48 kali median kategori.
+        Kata "premium" di nama produk berkaitan dengan harga di bawah median kategorinya (0,82 kali). Kata "original" dan
+        "official" berkaitan dengan harga 1,35 sampai 1,55 kali median kategori.
       </p>
     </div>
 
@@ -186,13 +186,14 @@
       Menambah data masih menaikkan skor, tetapi kenaikannya terus mengecil.
     </p>
     <div class="keputusan">
-      <h3>Batasnya ada di label, bukan di model</h3>
+      <h3>Dua penyebab: label yang keliru dan keterbatasan model</h3>
       <p>
-        Label dibuat dari bintang, padahal bintang sering tidak cocok dengan isi ulasan. Sekitar 19% ulasan
-        bintang 1–2 tidak berisi keluhan sama sekali, misalnya "Mantap" atau "Thanks". Sebaliknya, banyak
-        ulasan bintang 4–5 berisi keluhan jelas, seperti "barang yang dikirim rusak, tidak bisa dipakai".
-        Ulasan seperti ini tidak bisa ditebak dengan benar oleh model teks apa pun, jadi langkah berikutnya
-        yang paling menjanjikan adalah melabeli ulang sebagian ulasan berdasarkan isinya.
+        Label dibuat dari bintang, padahal bintang tidak selalu cocok dengan isi ulasan. Hasil pemeriksaan
+        manual: dari 60 sampel alarm palsu, 62% ternyata memang keluhan yang diberi bintang 4–5, seperti
+        "kainnya kurang kuat, baru dipakai sekali sobek". Precision yang terukur 68%, tetapi perkiraan
+        precision sebenarnya sekitar 88%. Sebaliknya, dari 138 keluhan yang paling yakin dilewatkan model,
+        77% adalah keluhan sungguhan yang pendek atau memakai kata yang jarang, seperti "Pengiriman lama".
+        Langkah berikutnya adalah data uji berlabel manual dan model yang lebih paham susunan kalimat.
       </p>
     </div>
     <p>
@@ -229,7 +230,7 @@
     <h2>Keterbatasan</h2>
     <ul class="poin">
       <li>Jumlah terjual adalah batas bawah, karena "1rb+" berarti minimal 1.000.</li>
-      <li>Kategori berbasis kata kunci tidak sempurna, dan 11% produk masuk "Lainnya".</li>
+      <li>Kategori berbasis kata kunci tidak sempurna. Sekitar 1 dari 10 produk yang diberi kategori masih salah golong, dan 8% produk masuk "Lainnya".</li>
       <li>Label sentimen berasal dari rating. Sekitar 4% ulasan bintang 1 dan 2 isinya justru pujian.</li>
       <li>Ulasan berasal dari tahun 2019 dan dari sekitar 160 toko, dengan ulasan negatif yang didominasi kategori handphone.</li>
       <li>Semua data adalah potret satu waktu, sehingga hasilnya menunjukkan hubungan, bukan sebab-akibat.</li>
