@@ -373,6 +373,15 @@ a:focus-visible,
 }
 .gambar figcaption { margin-top: 0.6rem; font-size: 0.85rem; color: var(--teks-lembut); }
 
+/* Dua screenshot bersebelahan di layar lebar, satu kolom di ponsel */
+.galeri {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  gap: 1.25rem;
+  margin: 1.5rem 0;
+}
+.galeri .gambar { margin: 0; }
+
 .angka-kunci {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

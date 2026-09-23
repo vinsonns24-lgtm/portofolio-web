@@ -50,9 +50,9 @@
 
   <ul class="angka-kunci">
     <li><strong>1</strong><span>kode untuk web dan Android</span></li>
-    <li><strong>7</strong><span>tenant contoh</span></li>
-    <li><strong>21</strong><span>menu contoh</span></li>
-    <li><strong>8</strong><span>kampus BINUS</span></li>
+    <li><strong>20</strong><span>mahasiswa penguji</span></li>
+    <li><strong>4,8/5</strong><span>kepuasan penguji</span></li>
+    <li><strong>8–12</strong><span>menit hemat, perkiraan penguji</span></li>
   </ul>
 
   <figure class="gambar">
@@ -64,9 +64,14 @@
   <section class="detail-bagian">
     <h2>Masalah</h2>
     <p>
-      Membeli makan di kantin berarti mengantre di tenant tanpa tahu berapa lama harus menunggu.
-      bfull memindahkan pemesanan ke aplikasi: pesan dari mana
-      saja, bayar nontunai, lalu datang ke tenant hanya saat makanan sudah siap.
+      Waktu istirahat di antara kelas hanya sekitar 20 sampai 30 menit, dan hampir semua mahasiswa
+      istirahat di jam yang sama. Akibatnya kantin penuh, waktu habis untuk mengantre dan menunggu
+      makanan dimasak, dan pembeli sering baru tahu menu favoritnya habis setelah sampai di depan kasir.
+    </p>
+    <p>
+      bfull memindahkan pemesanan ke aplikasi: lihat keramaian setiap tenant, pesan dari mana saja,
+      bayar nontunai, lalu datang ke tenant hanya saat makanan sudah siap. Pengguna utamanya mahasiswa
+      dengan jadwal padat, ditambah dosen dan staf yang enggan berdesakan di jam makan siang.
     </p>
     <p>
       Proyek ini tugas kelompok, tetapi seluruh perancangan dan penulisan kodenya saya kerjakan sendiri.
@@ -84,6 +89,55 @@
       <li><strong>Memantau pesanan</strong><span>Tiga tahap: dikonfirmasi, dimasak, siap diambil.</span></li>
       <li><strong>Menilai</strong><span>Bintang, tag cepat, dan komentar setelah pesanan diambil.</span></li>
     </ol>
+  </section>
+
+  <!-- ------------------------------------------------------------ tampilan -->
+  <section class="detail-bagian">
+    <h2>Tampilan aplikasi</h2>
+    <p>Screenshot versi web, mengikuti urutan alur di atas.</p>
+
+    <div class="galeri">
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-menu.jpg" alt="Beranda bfull: sapaan Good day, Alex, kotak pencarian, tombol kategori All, Main Course, Snacks, Drinks, dan Healthy, serta kartu menu berisi foto, rating, perkiraan waktu siap, harga, dan tombol tambah berwarna oranye." width="822" height="927" loading="lazy">
+        <figcaption>Beranda: pencarian, filter kategori, dan kartu menu dengan rating serta perkiraan waktu siap.</figcaption>
+      </figure>
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-tenant.jpg" alt="Halaman Browse tenants berisi kartu A&amp;W Restaurant, Starbucks, Yoshinoya, HokBen, Cerita Cinta, dan Bakmie Effata, masing-masing dengan rating, perkiraan waktu, dan kisaran harga." width="939" height="938" loading="lazy">
+        <figcaption>Daftar tenant, untuk pengguna yang sudah tahu mau membeli di mana.</figcaption>
+      </figure>
+    </div>
+
+    <figure class="gambar">
+      <img src="../assets/proyek/bfull-antrean.jpg" alt="Papan antrean kantin berlabel Live: Rasela Gourmet dan Starbucks berstatus Antrean Sedikit, Cerita Cinta Ramai, dan Bakmie Effata Sangat Padat dengan 10 pesanan aktif dan perkiraan 50 menit." width="1200" height="522" loading="lazy">
+      <figcaption>Papan antrean kantin: keramaian setiap tenant dan perkiraan waktu tunggu, diperbarui setiap 8 detik. Screenshot ini dari versi berbahasa Indonesia.</figcaption>
+    </figure>
+
+    <div class="galeri">
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-tray.jpg" alt="Halaman Your Tray berisi tiga menu dari A&amp;W Restaurant dengan tombol ubah jumlah dan hapus, pilihan voucher, subtotal dan total Rp 82.000, serta tombol Proceed &amp; Lock Order." width="936" height="936" loading="lazy">
+        <figcaption>Tray: ubah jumlah, pakai voucher, lalu kunci pesanan.</figcaption>
+      </figure>
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-bayar.jpg" alt="Jendela Cashless Payment di atas halaman Tray, menampilkan total Rp 82.000, kode QR bertuliskan Powered by bfull Pay QRIS, tombol Simulate Cashless Success, dan pilihan Abort Order." width="944" height="857" loading="lazy">
+        <figcaption>Pembayaran QRIS. Di prototipe ini pembayaran disimulasikan dengan satu tombol.</figcaption>
+      </figure>
+    </div>
+
+    <figure class="gambar">
+      <img src="../assets/proyek/bfull-lacak.jpg" alt="Banner oranye pelacak pesanan A&amp;W Restaurant bertuliskan Paid &amp; Confirmed, dengan perkiraan waktu ambil 01:09 PM dan tiga tahap: Confirmed, Cooking, Ready." width="942" height="375" loading="lazy">
+      <figcaption>Pelacak pesanan di bagian atas beranda: dikonfirmasi, dimasak, siap diambil, lengkap dengan jam ambil.</figcaption>
+    </figure>
+
+    <div class="galeri">
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-ulasan.jpg" alt="Jendela Yum! Order Picked Up dengan lima bintang kosong, tag cepat seperti Fast service, Tasty, dan Worth the price, kolom komentar, serta tombol Submit Rating berwarna oranye." width="925" height="671" loading="lazy">
+        <figcaption>Ulasan setelah pesanan diambil: bintang, tag cepat, dan komentar.</figcaption>
+      </figure>
+      <figure class="gambar">
+        <img src="../assets/proyek/bfull-profil.jpg" alt="Halaman Student Profile berisi nama Alex Chandra, kartu bfull Pay dengan saldo Rp 150.000, 269 poin, 3 pesanan, dan 90 menit dihemat, serta menu Order History, Favorites, dan My Vouchers." width="935" height="928" loading="lazy">
+        <figcaption>Profil: saldo bfull Pay, poin, riwayat pesanan, favorit, dan voucher.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- ------------------------------------------------------------ keputusan -->
@@ -126,11 +180,68 @@
     </div>
 
     <div class="keputusan">
+      <h3>"Tray", bukan "Cart"</h3>
+      <p>
+        Tempat menampung pesanan dinamai Tray (nampan), bukan Cart (keranjang belanja) seperti di toko
+        online. Nampan adalah benda yang memang dipakai membawa makanan di kantin, jadi pengguna langsung
+        paham fungsinya tanpa perlu menebak.
+      </p>
+    </div>
+
+    <div class="keputusan">
+      <h3>Tombol bayar tidak muncul saat Tray kosong</h3>
+      <p>
+        Kalau Tray dibuka sebelum ada menu yang ditambahkan, halaman hanya menampilkan status kosong dan
+        tombol untuk kembali ke daftar menu. Tombol pembayaran sengaja disembunyikan, supaya pengguna tidak
+        bisa memulai transaksi tanpa pesanan.
+      </p>
+    </div>
+
+    <div class="keputusan">
       <h3>Akun demo di halaman masuk</h3>
       <p>
         Penguji dan dosen bisa langsung mencoba dengan satu tombol, tanpa perlu mendaftar dulu.
       </p>
     </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ pengujian -->
+  <section class="detail-bagian">
+    <h2>Pengujian pengguna</h2>
+    <p>
+      Prototipe diuji oleh 20 mahasiswa BINUS: 11 lewat laptop dan 9 lewat ponsel, masing-masing sekitar
+      3 sampai 10 menit. Penguji hanya diberi penjelasan singkat, lalu diminta masuk, memilih menu,
+      mengisi Tray, membayar dengan QRIS, dan melacak pesanan tanpa panduan tambahan. Setelah itu mereka
+      mengisi kuesioner skala 1 sampai 5.
+    </p>
+    <div class="tabel-bungkus">
+      <table>
+        <thead>
+          <tr><th>Pernyataan</th><th class="angka">Rata-rata (1–5)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bisa memakai aplikasi tanpa petunjuk tambahan</td><td class="angka">4,75</td></tr>
+          <tr><td>Alur dari masuk sampai melacak pesanan terasa logis</td><td class="angka">4,45</td></tr>
+          <tr><td>Tampilan nyaman dan tidak membingungkan</td><td class="angka">4,45</td></tr>
+          <tr class="baris-utama"><td>Kepuasan keseluruhan</td><td class="angka">4,80</td></tr>
+          <tr><td>Bersedia memakai kalau diterapkan di kantin BINUS</td><td class="angka">4,80</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Sebanyak 11 penguji memperkirakan aplikasi ini menghemat 8 sampai 12 menit waktu istirahat, dan
+      5 lainnya lebih dari 12 menit. Lebih dari 90% penguji menyelesaikan semua tugas tanpa kendala.
+      Satu penguji sempat bingung di halaman Tray, tetapi tetap bisa menyelesaikan pembayaran.
+    </p>
+    <p>
+      Masukan terbanyak: pembayaran langsung lewat dompet digital seperti GoPay tanpa keluar aplikasi,
+      informasi gizi di setiap menu, dan layanan antar ke kelas.
+    </p>
+    <p class="catatan-kecil">
+      Pengujian ini dilakukan bersama kelompok. Pengujinya sedikit dan direkrut sendiri, dan skornya berasal
+      dari penilaian penguji, jadi hasilnya lebih tepat dibaca sebagai umpan balik awal daripada ukuran
+      kegunaan yang ketat.
+    </p>
   </section>
 
   <!-- ------------------------------------------------------------ teknologi -->
@@ -154,6 +265,16 @@
       <li>Status pesanan maju otomatis berdasarkan waktu, bukan dari penjual.</li>
       <li>Pembayaran QRIS hanya tampilan, tanpa transaksi sungguhan.</li>
       <li>Data pesanan tersimpan di perangkat masing-masing, sehingga tenant tidak bisa melihatnya. Versi sungguhan butuh server bersama.</li>
+    </ul>
+  </section>
+
+  <!-- ------------------------------------------------------------ pelajaran -->
+  <section class="detail-bagian">
+    <h2>Pelajaran dari proyek ini</h2>
+    <ul class="poin">
+      <li>Memusatkan prototipe awal pada alur inti (memilih menu, membayar, melacak pesanan), lalu baru membuat halaman pendukung seperti profil dan voucher setelah alur inti tervalidasi.</li>
+      <li>Lebih banyak iterasi di Figma sebelum menulis kode, karena mengubah tata letak di desain jauh lebih cepat daripada di kode.</li>
+      <li>Menguji aplikasi langsung di kantin saat jam sibuk. Masalah utamanya adalah waktu yang mepet di tengah keramaian, dan kondisi itu tidak muncul saat pengujian di tempat yang tenang.</li>
     </ul>
   </section>
 
