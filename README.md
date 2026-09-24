@@ -39,7 +39,7 @@ Lalu buka http://localhost:8000.
 
 Setiap proyek punya dua bagian: kartu ringkas di halaman utama, dan halaman detail di folder `proyek/`.
 
-1. **Halaman detail.** Salin `proyek/credit-score.html` menjadi misalnya `proyek/nama-proyek.html`, lalu ganti isinya. Urutan bagiannya: masalah, data, alur, keputusan penting, hasil, keterbatasan, langkah berikutnya. Link GitHub dan demo ditaruh di tombol bagian atas.
+1. **Halaman detail.** Salin `proyek/credit-score.html` menjadi misalnya `proyek/nama-proyek.html`, lalu ganti isinya. Urutan bagiannya: masalah, data, alur, keputusan penting, hasil, keterbatasan, langkah berikutnya, lalu pelajaran dari proyek ini. Link GitHub dan demo ditaruh di tombol bagian atas.
 2. **Kartu.** Di `index.html`, bagian `<section id="proyek">`, salin satu blok `<article class="kartu">` lalu ganti isinya:
    - Judul (`<h3>`) diarahkan ke halaman detail tadi.
    - Satu kalimat ringkasan, sebaiknya memuat satu angka atau temuan utama.

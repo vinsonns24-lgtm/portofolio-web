@@ -307,6 +307,17 @@
     </ul>
   </section>
 
+  <!-- ------------------------------------------------------------ pelajaran -->
+  <section class="detail-bagian">
+    <h2>Pelajaran dari proyek ini</h2>
+    <ul class="poin">
+      <li>Periksa satuan data sebelum membaginya. Satu nasabah muncul di beberapa baris, jadi data dibagi per nasabah. Pengaruhnya diukur langsung (0,686 dengan pembagian acak, 0,669 per nasabah), bukan diasumsikan.</li>
+      <li>Tidak semua keputusan pembersihan mengubah skor. Mengganti nilai salah input dengan NaN atau memotongnya memberi skor yang hampir sama. Alasan memilih NaN adalah supaya data tetap jujur, dan alasan itu perlu disampaikan apa adanya.</li>
+      <li>Deployment sering gagal di detail kecil: kode AWS sempat berbeda dari versi lokal, satu file tertulis dua kali sampai tidak bisa dijalankan, dan smoke test mengirim kategori sebagai angka. Skrip cloud diuji dulu di laptop, dan smoke test memeriksa bahwa hasil endpoint sama dengan hasil lokal.</li>
+      <li>Resource cloud harus dihapus setelah dipakai. Endpoint dan instance EC2 dihapus berdasarkan namanya, supaya pembersihan tidak bergantung pada kondisi notebook.</li>
+    </ul>
+  </section>
+
   <ul class="tag detail-tag">
     <li>Python</li><li>pandas</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li><li>Amazon S3</li><li>Amazon EC2</li>
   </ul>
