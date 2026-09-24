@@ -114,17 +114,19 @@
       </p>
       <p>
         Karena itu pembagian data memakai <code>GroupShuffleSplit</code> dan validasi silang memakai
-        <code>StratifiedGroupKFold</code>, keduanya berdasarkan ID nasabah. Dampaknya terlihat di MLflow:
-        skor validasi Random Forest turun dari 0,697 menjadi 0,669. Skor yang lebih rendah itu yang jujur.
+        <code>StratifiedGroupKFold</code>, keduanya berdasarkan ID nasabah. Dengan model yang sama, validasi
+        acak per baris memberi F1 macro 0,686, sedangkan validasi per nasabah 0,669. Selisihnya kecil, jadi
+        model tidak sekadar menghafal nasabah, tetapi skor yang lebih rendah itu yang jujur.
       </p>
     </div>
 
     <div class="keputusan">
       <h3>Nilai salah input dianggap tidak diketahui, bukan dipotong</h3>
       <p>
-        Cara umum menangani umur 4824 adalah memotongnya ke batas atas, misalnya 100. Hasilnya ratusan
-        nasabah "berumur 100 tahun" yang sebenarnya tidak ada, dan model belajar dari nilai palsu itu.
-        Di sini nilai seperti itu diganti NaN lalu diisi median.
+        Cara umum menangani umur 4824 adalah memotongnya ke batas atas, misalnya 90. Di data ini, cara itu
+        memunculkan 473 nasabah yang tiba-tiba berumur tepat 90 tahun, padahal umur aslinya tidak diketahui.
+        Di sini nilai seperti itu diganti NaN lalu diisi median. Skor model untuk kedua cara hampir sama
+        (0,689 dan 0,690), jadi alasannya bukan skor, melainkan supaya data yang dipakai model tetap jujur.
       </p>
       <p>
         Batas wajar tiap kolom diambil dari data, bukan ditebak. Contohnya suku bunga: nilai asli ada di
@@ -154,7 +156,10 @@
   <!-- ------------------------------------------------------------ hasil -->
   <section class="detail-bagian">
     <h2>Hasil</h2>
-    <p>Empat model dibandingkan dengan validasi silang 3-fold pada data latih:</p>
+    <p>
+      Empat model dibandingkan dengan validasi silang 3-fold per nasabah pada data latih, masing-masing
+      setelah pengaturannya dipilih dengan GridSearchCV:
+    </p>
     <div class="tabel-bungkus">
       <table>
         <thead>
@@ -190,7 +195,7 @@
           <tr><th>Kelas</th><th class="angka">Jumlah</th><th class="angka">Recall</th><th class="angka">Precision</th></tr>
         </thead>
         <tbody>
-          <tr><td>Good</td><td class="angka">909</td><td class="angka">0,85</td><td class="angka">0,54</td></tr>
+          <tr><td>Good</td><td class="angka">909</td><td class="angka">0,84</td><td class="angka">0,54</td></tr>
           <tr><td>Standard</td><td class="angka">2.645</td><td class="angka">0,60</td><td class="angka">0,84</td></tr>
           <tr><td>Poor</td><td class="angka">1.457</td><td class="angka">0,77</td><td class="angka">0,65</td></tr>
         </tbody>
