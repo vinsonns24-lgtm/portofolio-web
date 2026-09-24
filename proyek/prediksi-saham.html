@@ -31,8 +31,9 @@
   <h1>Prediksi Harga Saham dengan LSTM</h1>
   <p class="paragraf-besar">
     Model LSTM yang memprediksi harga penutupan satu hari ke depan untuk saham Apple (AAPL) dan AMD dari
-    harga lima hari sebelumnya. Isi utamanya adalah eksperimen bertahap: apa yang benar-benar membuat
-    model lebih baik, dan apa yang ternyata tidak. Soal ujian akhir mata kuliah Deep Learning, BINUS University.
+    harga lima hari sebelumnya. Isi utamanya adalah eksperimen bertahap, lalu satu pertanyaan yang sering
+    dilewatkan: apakah model itu lebih baik dari sekadar menebak harga besok sama dengan harga hari ini?
+    Soal ujian akhir mata kuliah Deep Learning, BINUS University.
   </p>
 
   <p class="detail-tautan">
@@ -44,13 +45,13 @@
   <ul class="angka-kunci">
     <li><strong>40</strong><span>tahun data harian</span></li>
     <li><strong>10</strong><span>varian model diuji</span></li>
-    <li><strong>66%</strong><span>RMSE AAPL turun dari baseline</span></li>
-    <li><strong>1,6%</strong><span>MAPE AAPL data uji</span></li>
+    <li><strong>3×</strong><span>error baseline AAPL dibanding patokan</span></li>
+    <li><strong>6,32</strong><span>RMSE model final, patokan 6,29</span></li>
   </ul>
 
   <figure class="gambar">
     <img src="../assets/proyek/saham-prediksi-vs-aktual.png" alt="Dua grafik harga aktual dibanding prediksi di data uji. Untuk AAPL, prediksi baseline melenceng jauh di atas harga aktual saat harga naik tajam, sedangkan prediksi model final hampir berimpit dengan harga aktual. Untuk AMD, kedua prediksi sama-sama dekat dengan harga aktual." width="1500" height="500" loading="lazy">
-    <figcaption>Prediksi dibanding harga aktual di data uji. Baseline AAPL melenceng jauh saat harga naik tajam, model final tetap mengikuti.</figcaption>
+    <figcaption>Prediksi dibanding harga aktual di data uji. Baseline AAPL melenceng jauh saat harga naik tajam, model final tetap mengikuti, tetapi hampir sama persis dengan harga hari sebelumnya.</figcaption>
   </figure>
 
   <!-- ------------------------------------------------------------ masalah -->
@@ -95,6 +96,25 @@
     <h2>Temuan dari eksperimen</h2>
 
     <div class="keputusan">
+      <h3>Model final tidak mengalahkan patokan harga-kemarin</h3>
+      <p>
+        Patokan paling sederhana untuk harga saham adalah menebak harga besok sama dengan harga hari ini.
+        Di data uji yang sama, patokan ini mendapat RMSE AAPL 6,29, sedikit lebih baik dari model final (6,32).
+        MAE-nya juga sedikit lebih baik di kedua saham. Baseline LSTM malah tiga kali lebih buruk dari patokan.
+      </p>
+      <p>
+        Jadi penurunan RMSE AAPL 66% dari baseline sebenarnya adalah model yang kembali ke level patokan, bukan
+        model yang mengalahkan patokan. Model final praktis mempelajari selisih yang hampir nol. Ini sesuai sifat
+        <em>random walk</em> harga saham: dari lima harga terakhir saja, harga besok tidak bisa ditebak lebih baik
+        dari harga hari ini.
+      </p>
+    </div>
+    <figure class="gambar">
+      <img src="../assets/proyek/saham-patokan-naif.png" alt="Grafik batang RMSE di data uji. AAPL: LSTM baseline 18,85, patokan rata-rata 5 hari 7,34, LSTM final 6,32, patokan harga besok sama dengan hari ini 6,29. AMD: LSTM baseline 1,44, rata-rata 5 hari 1,89, LSTM final 1,38, patokan harga hari ini 1,38." width="1194" height="370" loading="lazy">
+      <figcaption>RMSE di data uji. Model final (biru) setara dengan patokan harga-kemarin (oranye), tetapi tidak lebih baik.</figcaption>
+    </figure>
+
+    <div class="keputusan">
       <h3>Model yang lebih besar tidak membantu</h3>
       <p>
         Menumpuk dua layer LSTM, menambah dropout, atau menambah layer Dense tidak konsisten membaik.
@@ -105,7 +125,7 @@
     </div>
 
     <div class="keputusan">
-      <h3>Yang membantu adalah mengubah apa yang diprediksi</h3>
+      <h3>Yang berdampak besar adalah mengubah apa yang diprediksi</h3>
       <p>
         Uji Augmented Dickey-Fuller menunjukkan harga AAPL tidak stasioner (p-value 0,999), sedangkan
         selisih harga hariannya stasioner (p-value di bawah 0,001). Karena itu model dilatih memprediksi
@@ -150,11 +170,12 @@
           <tr><td>Dua layer LSTM, dropout 0,2, Dense(16)</td><td class="angka">15,48</td><td class="angka">3,28</td></tr>
           <tr><td>Bidirectional LSTM</td><td class="angka">11,02</td><td class="angka">1,81</td></tr>
           <tr class="baris-utama"><td>Final: tanh, target selisih harga</td><td class="angka">6,32</td><td class="angka">1,38</td></tr>
+          <tr><td>Patokan tanpa model: harga besok = harga hari ini</td><td class="angka">6,29</td><td class="angka">1,38</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p>Hasil lengkap model final dibanding baseline:</p>
+    <p>Hasil lengkap model final dibanding baseline dan patokan harga-kemarin:</p>
     <div class="tabel-bungkus">
       <table>
         <thead>
@@ -163,8 +184,10 @@
         <tbody>
           <tr><td>AAPL</td><td>Baseline</td><td class="angka">18,85</td><td class="angka">12,44</td><td class="angka">4,66%</td></tr>
           <tr class="baris-utama"><td>AAPL</td><td>Final</td><td class="angka">6,32</td><td class="angka">3,94</td><td class="angka">1,61%</td></tr>
+          <tr><td>AAPL</td><td>Patokan harga-kemarin</td><td class="angka">6,29</td><td class="angka">3,84</td><td class="angka">1,57%</td></tr>
           <tr><td>AMD</td><td>Baseline</td><td class="angka">1,44</td><td class="angka">0,94</td><td class="angka">2,51%</td></tr>
           <tr class="baris-utama"><td>AMD</td><td>Final</td><td class="angka">1,38</td><td class="angka">0,92</td><td class="angka">2,46%</td></tr>
+          <tr><td>AMD</td><td>Patokan harga-kemarin</td><td class="angka">1,38</td><td class="angka">0,91</td><td class="angka">2,44%</td></tr>
         </tbody>
       </table>
     </div>
@@ -175,16 +198,18 @@
     <h2>Keterbatasan</h2>
     <ul class="poin">
       <li>
-        Model belum dibandingkan dengan patokan paling sederhana untuk data saham, yaitu "harga besok sama
-        dengan harga hari ini". Model final memprediksi selisih dari harga terakhir, jadi perbandingan ini
-        perlu untuk menunjukkan seberapa besar nilai tambahnya.
+        Hanya memakai harga penutupan. Untuk benar-benar mengalahkan patokan harga-kemarin dibutuhkan
+        informasi lain, misalnya volume, harga saham lain, atau berita.
       </li>
       <li>
         Error membesar saat pasar bergejolak. Residual tersebar di sekitar nol tanpa pola terhadap waktu,
         kecuali pada crash Maret 2020, ketika error AAPL melebar sampai sekitar 35 USD.
       </li>
-      <li>Hanya memakai harga penutupan. Volume, harga saham lain, dan berita tidak dipakai.</li>
       <li>Satu kali pembagian data latih dan uji. Hasil bisa berbeda di periode lain.</li>
+      <li>
+        Tabel sepuluh varian dicatat dari percobaan terpisah. Kode varian lanjutan tidak disertakan di
+        notebook ujian, jadi angkanya tidak bisa diulang langsung dari repo.
+      </li>
     </ul>
   </section>
 
