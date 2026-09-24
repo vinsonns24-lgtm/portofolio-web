@@ -100,9 +100,10 @@
     <div class="keputusan">
       <h3>Klaim raksasa menggeser severity bulanan</h3>
       <p>
-        Median klaim Rp14 juta, tetapi 1% klaim terbesar bernilai di atas Rp634 juta dan bisa menyumbang
-        sampai 18% total satu bulan. Sembilan dari sepuluh klaim terbesar adalah rawat inap di luar
-        Indonesia. Lonjakan seperti ini hampir mustahil ditebak per bulan.
+        Median klaim Rp14,5 juta, tetapi 1% klaim terbesar (47 klaim) bernilai di atas Rp634 juta. Ke-47
+        klaim ini menyumbang 18,5% seluruh nilai klaim, dan di Februari 2025 sampai 36% total bulan itu.
+        Sembilan dari sepuluh klaim terbesar adalah rawat inap di luar Indonesia. Lonjakan seperti ini
+        hampir mustahil ditebak per bulan.
       </p>
     </div>
   </section>
@@ -143,13 +144,15 @@
       <p>
         MAPE menghukum prediksi yang terlalu tinggi lebih berat daripada yang terlalu rendah. Faktor 0,95
         memperbaiki ketiga target sekaligus di backtest. Nilainya sengaja dibatasi di kelipatan 0,05
-        supaya tidak terlalu menyesuaikan diri dengan sembilan titik backtest.
+        supaya tidak terlalu menyesuaikan diri dengan sembilan titik backtest. Faktor 0,97 memberi skor
+        gabungan yang sama.
       </p>
     </div>
 
     <p>
       Prediksi final per bulan: sekitar <strong>225 klaim</strong>, severity <strong>Rp54,5 juta</strong>,
-      dan total <strong>Rp12,9 miliar</strong>.
+      dan total <strong>Rp12,9 miliar</strong>. Ketiga target diprediksi dan dinilai terpisah, jadi
+      225 × Rp54,5 juta (Rp12,3 miliar) tidak sama persis dengan prediksi total.
     </p>
   </section>
 
@@ -179,8 +182,10 @@
       <h3>Lokasi rumah sakit lebih penting daripada jenis plan</h3>
       <p>
         Klaim di Singapura hanya 22% dari jumlah klaim, tetapi 50% total nilai. Median klaim di sana Rp53
-        juta, dibanding Rp9 juta di Indonesia. Setelah lokasi diketahui, plan hampir tidak menambah informasi:
-        yang mahal adalah kebiasaan berobat ke luar negeri, bukan plannya.
+        juta, dibanding Rp9 juta di Indonesia. Plan dan lokasi saling terkait: semua klaim plan M-003
+        terjadi di Indonesia, sedangkan separuh klaim plan M-001 di Singapura. Di model, pengaruh plan kecil
+        setelah lokasi RS diketahui, jadi perbedaan biaya antarplan sebagian besar terjelaskan oleh tempat
+        berobat.
       </p>
     </div>
 
