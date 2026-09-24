@@ -216,11 +216,53 @@
       pelatihan, supaya tidak ada nilai yang diam-diam diabaikan model.
     </p>
     <p>
-      <strong>AWS.</strong> Pipeline yang sama ditulis ulang untuk SageMaker Pipelines, dengan tahap
-      ingestion, preprocessing, training, dan evaluation, lalu dijalankan dalam local mode. Model dikemas,
-      diunggah ke S3, dan di-deploy sebagai endpoint di instance <code>ml.m5.large</code>. Endpoint diuji
-      dengan satu permintaan prediksi, lalu dihapus supaya tidak terus menimbulkan biaya.
+      <strong>AWS.</strong> Pipeline yang sama, dengan pembersihan, pembagian per nasabah, dan grid yang sama,
+      ditulis ulang untuk AWS dan dijalankan di AWS Academy Learner Lab. Alurnya tiga lapis: pipeline
+      pelatihan di SageMaker, model di SageMaker Endpoint, dan aplikasi Streamlit di EC2 yang memanggil
+      endpoint itu.
     </p>
+
+    <div class="galeri">
+      <figure class="gambar">
+        <img src="../assets/proyek/credit-aws-app-standard.png" alt="Aplikasi Credit Score Classification (AWS SageMaker) dibuka dari alamat 3.93.36.133:8501. Form berisi data pribadi, data kredit, dan perilaku pembayaran, dengan hasil Credit Score: Standard dari endpoint credit-score-endpoint." width="1862" height="969" loading="lazy">
+        <figcaption>Aplikasi Streamlit berjalan di EC2 dan dibuka lewat IP publik instance. Prediksinya dihitung oleh SageMaker Endpoint.</figcaption>
+      </figure>
+      <figure class="gambar">
+        <img src="../assets/proyek/credit-aws-app-poor.png" alt="Aplikasi yang sama dengan data nasabah berisiko: 9 rekening bank, 9 pinjaman, suku bunga 19%, Credit Mix Bad, dan membayar tagihan minimum. Hasilnya Credit Score: Poor." width="1881" height="957" loading="lazy">
+        <figcaption>Nasabah dengan banyak pinjaman, Credit Mix Bad, dan hanya membayar tagihan minimum digolongkan Poor.</figcaption>
+      </figure>
+    </div>
+
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-aws-ec2-instance.png" alt="Detail instance EC2 credit-score-app: status Running, tipe t3.small, IPv4 publik 3.93.36.133, dan IAM role LabRole." width="1695" height="383" loading="lazy">
+      <figcaption>Instance EC2 <code>t3.small</code> dengan IP publik yang sama dengan alamat aplikasi, dan IAM role yang boleh memanggil endpoint.</figcaption>
+    </figure>
+
+    <p>
+      <strong>Pipeline.</strong> Empat tahap SageMaker Pipelines, yaitu ingest, preprocess, train, dan evaluate,
+      dijalankan dalam local mode di notebook instance. Random Forest kembali terpilih, dengan F1 macro 0,691
+      di data uji, lolos ambang 0,65. Angkanya sedikit berbeda dari versi lokal (0,689) karena container
+      SageMaker memakai scikit-learn 1.4.2.
+    </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-aws-pipeline.png" alt="Output terminal: tahap CreditScoreIngest, CreditScorePreprocess, CreditScoreTrain, dan CreditScoreEval berstatus Succeeded. Accuracy 0.7018 dan F1 macro 0.6911, lolos threshold 0.65." width="806" height="177" loading="lazy">
+      <figcaption>Keempat tahap pipeline berhasil, dan model lolos ambang deployment.</figcaption>
+    </figure>
+
+    <p>
+      <strong>Endpoint.</strong> Model dikemas, diunggah ke S3, lalu di-deploy di instance <code>ml.m5.large</code>.
+      Smoke test mengirim tiga nasabah dari data uji. Ketiganya ditebak benar, dan hasilnya sama dengan uji
+      fungsi endpoint di notebook sebelum deploy. Setelah pengujian, instance EC2 dan endpoint dihapus supaya
+      tidak terus menimbulkan biaya.
+    </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-aws-endpoint.png" alt="Halaman Endpoints di console SageMaker: credit-score-endpoint berstatus InService." width="859" height="84" loading="lazy">
+      <figcaption>Endpoint berstatus InService di console SageMaker.</figcaption>
+    </figure>
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-aws-smoke-test.png" alt="Kode smoke test dan hasilnya: nasabah Good, Standard, dan Poor ditebak Good, Standard, dan Poor oleh endpoint, dengan peluang 66%, 81%, dan 78%, lalu tanda centang Hasil endpoint sama dengan uji lokal." width="1509" height="520" loading="lazy">
+      <figcaption>Smoke test: tiga nasabah dari data uji ditebak benar oleh endpoint.</figcaption>
+    </figure>
   </section>
 
   <!-- ------------------------------------------------------------ keterbatasan -->
@@ -258,7 +300,7 @@
   </section>
 
   <ul class="tag detail-tag">
-    <li>Python</li><li>pandas</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li><li>Amazon S3</li>
+    <li>Python</li><li>pandas</li><li>scikit-learn</li><li>MLflow</li><li>Streamlit</li><li>AWS SageMaker</li><li>Amazon S3</li><li>Amazon EC2</li>
   </ul>
 
   <a class="kembali" href="../index.html#proyek">← Kembali ke semua proyek</a>
