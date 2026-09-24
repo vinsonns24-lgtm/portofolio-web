@@ -173,6 +173,10 @@
         </tbody>
       </table>
     </div>
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-mlflow-runs.png" alt="Tabel run MLflow: GradientBoosting best_cv_f1_macro 0.653, RandomForest 0.6691 dengan test_f1_macro 0.6886, DecisionTree 0.6562, dan LogisticRegression 0.6397, beserta train_f1_macro masing-masing." width="1097" height="180" loading="lazy">
+      <figcaption>Run induk tiap model di MLflow. Kolom train_f1_macro memperlihatkan Random Forest paling banyak menghafal data latih.</figcaption>
+    </figure>
 
     <p>Random Forest terpilih, lalu diuji pada 5.011 baris data uji dari nasabah yang tidak pernah dilihat:</p>
     <div class="tabel-bungkus">
@@ -215,6 +219,10 @@
       label beserta peluang tiap kelas. Batas input di form mengikuti batas wajar yang dipakai saat
       pelatihan, supaya tidak ada nilai yang diam-diam diabaikan model.
     </p>
+    <figure class="gambar">
+      <img src="../assets/proyek/credit-lokal-app-good.png" alt="Aplikasi Streamlit lokal Credit Score Classification di localhost:8502 dengan form data pribadi, data rekening dan kredit, riwayat kredit, dan perilaku pembayaran. Hasilnya Credit Score: Good." width="1900" height="970" loading="lazy">
+      <figcaption>Aplikasi Streamlit versi lokal, memakai model dari pipeline pelatihan.</figcaption>
+    </figure>
     <p>
       <strong>AWS.</strong> Pipeline yang sama, dengan pembersihan, pembagian per nasabah, dan grid yang sama,
       ditulis ulang untuk AWS dan dijalankan di AWS Academy Learner Lab. Alurnya tiga lapis: pipeline
