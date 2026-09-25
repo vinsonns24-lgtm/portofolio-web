@@ -43,7 +43,7 @@ Setiap proyek punya dua bagian: kartu ringkas di halaman utama, dan halaman deta
 2. **Kartu.** Di `index.html`, bagian `<section id="proyek">`, salin satu blok `<article class="kartu">` lalu ganti isinya:
    - Judul (`<h3>`) diarahkan ke halaman detail tadi.
    - Satu kalimat ringkasan, sebaiknya memuat satu angka atau temuan utama.
-   - `<ul class="tag">` diisi paling banyak tiga teknologi utama.
+   - `<ul class="tag">` diisi semua teknologi yang dipakai, sama dengan tag di bagian bawah halaman detail.
    - `<ul class="kartu-aksi">` berisi tiga pilihan: demo ("Buka dashboard ↗" atau "Buka aplikasi ↗"), "GitHub ↗", lalu "Penjelasan lengkap →" dengan kelas `aksi-detail`. Kalau proyeknya belum punya demo, hapus saja pilihan pertama.
 
 Gambar untuk halaman detail disimpan di `assets/proyek/`.
